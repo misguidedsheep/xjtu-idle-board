@@ -6,3 +6,8 @@
 - Nodejs, Express, EJS
 
 node_modules不上传, 可使用`npm install`补全模块
+
+### 运行调试
+
+- Linux/MacOS: `DEBUG=myapp:* npm start`
+- Windows: `set DEBUG=myapp:* & npm start`
