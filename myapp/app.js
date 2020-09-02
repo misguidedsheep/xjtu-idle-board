@@ -5,7 +5,6 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var submitRouter = require('./routes/submit')
 var database = require('./database');
 const { time } = require('console');
@@ -32,11 +31,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.use('/', indexRouter);
-app.post('/index(.html)?', indexRouter);
+app.use('/index.html', indexRouter);
 app.post('/submit.html', submitRouter);
-app.get('/base(.html)?', function(req, res){
-  res.render('base');
-})
+
 // app.post('/submit.html', function(req, res){
 //   var itemName = req.body.itemName;
 //   console.log('itemName: ' + itemName);
