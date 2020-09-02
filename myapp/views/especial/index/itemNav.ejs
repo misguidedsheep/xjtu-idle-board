@@ -1,0 +1,33 @@
+<!-- 排序筛选导航栏 -->
+<nav class="navbar navbar-expand navbar-dark bg-dark justify-content-between">
+    <div class="container-fluid row">
+      <div class="collapse navbar-collapse col-sm-8">
+        <ul class="navbar-nav row">
+          <li class="nav-item active"><a href="#" class="nav-link">最新发布<span class="sr-only">(current)</span></a></li>
+          <li class="nav-item"><a href="#" class="nav-link">价格</a></li>
+          <li class="nav-item"><a href="#" class="nav-link">成色</a></li>
+          <li class="nav-item"><a href="#" class="nav-link">浏览量</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                分类
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="#">数码</a>
+                <a class="dropdown-item" href="#">电器</a>
+                <a class="dropdown-item" href="#">美妆</a>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="col-sm-4">
+        <form class="form-inline" >
+            <input type="text" class="form-control-sm col-3" placeholder="最低">
+            <span class="navbar-text col-1"> - </span>
+            <input type="text" class="form-control-sm col-3" placeholder="最高">
+            <button type="button" class="btn col-4 btn-sm btn-primary ml-lg-3 ">设置价格区间</button>
+        </form>
+      </div>
+    </div>
+</nav>
+<!-- 排序筛选导航栏结束 -->

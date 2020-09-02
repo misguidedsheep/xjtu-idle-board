@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="src/static/favicon.ico">
+    <title>Demo</title>
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <!-- Custom styles for this template -->
+    <link href="stylesheets/index.css" rel="stylesheet">
+  </head>
+
+  <body>
+     <!--顶部导航栏 -->
+     <nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark ">
+		<a class="navbar-brand" href="index.html">XJTU Idle Board</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarBody" aria-controls="navbarBody" aria-expanded="false" aria-label="Toggle navigation">
+			<span class=" navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarBody">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item"><a href="index.html" class="nav-link">主页<span class="sr-only">(current)</span></a></li>
+				<li class="nav-item"><a href="iwant.html" class="nav-link">求购</a></li>
+				<li class="nav-item active"><a href="submit.html" class="nav-link">发布闲置  </a></li>
+				<li class="nav-item"><a href="#" class="nav-link">关于</a></li>
+			</ul>
+			<form class="form-inline navbar-dark bg-dark my-2 my-lg-0 ">
+				<input type="search" class="form-control mr-sm-2" placeholder="Search">
+			</form>
+			<ul class="navbar-nav">
+				<li class="nav-item"><a href="https://cas.xjtu.edu.cn" class="nav-link">使用NetID登入<span class="sr-only">(current)</span></a></li>
+			</ul>
+		</div>
+    </nav>
+    <!-- 导航栏结束 -->
+    <hr>
+
+
+    <div class="container">
+			<h2>发布闲置</h2>
+			<hr>
+			<form action="" method="post">
+				<div class=" form-row col-sm-8">
+					<div class="form-group col-sm-12">
+						<label for="itemName">商品名称*</label>
+						<input type="text" name="itemName" class="form-control" placeholder="item name" id="itemName">
+						<small id="itemNameHelper" class="form-text text-muted">输入准确的商品名称, 更容易被搜索到</small>
+					</div>
+					<div class="form-group col-sm-12">
+						<label for="itemDesc">商品简介*</label>
+						<input type="text" name="itemDesc" class="form-control" placeholder="item description" id="itemDesc">
+						<small id="itemDescHelper" class="form-text text-muted">简要的补充说明（50字以内）</small>
+					</div>
+					<div class="form-group col-sm-12">
+						<label for="oldNewRate">新旧程度</label>
+						<input type="range" name="oldNewRate" class="form-control-range" id="oldNewRate">
+					</div>
+	
+					<!-- <div class="col-md-8 custom-file">
+						
+						<input type="file" accept="image/*" class="custom-file-input" id="validatedCustomFile" required>
+						<label for="validatedCustomFile" class="custom-file-label">上传照片*</label>
+						<div class="invalid-feedback">Example invalid custom file feedback</div>
+					</div> -->
+
+				</div>
+
+				<hr>
+				<div class=" col-sm-10">
+					<label for="" class="h5">运送方式</label>
+					<div class="row">
+						
+						<div class="form-check form-inline col-sm">
+							<input class=" form-check-input" type="checkbox" value="" name="postSupport" id="postSupport">
+							<label class=" form-check-label" for="postSupport">
+								支持邮寄
+							</label>
+						</div>
+						<div class="form-check form-inline col-sm">
+							<input class=" form-check-input" type="checkbox" value="" name="faceToFace" id="faceToFace">
+							<label class=" form-check-label" for="faceToFace">
+								支持当面交易
+							</label>
+						</div>
+						<div class="form-check form-inline col-sm">
+							<input class=" form-check-input" type="checkbox" value="" name="noNeedTrans" id="noNeedTrans">
+							<label class=" form-check-label" for="noNeedTrans">
+								无需运送
+							</label>
+						</div>
+					</div>
+				</div>
+				
+				
+				<hr>
+				<div class="form-group col-sm-10">
+					<label for="remarks" class="h5">备注</label>
+					<input type="text" class="form-control" placeholder="remarks" name="remarks" id="remarks">
+				</div>
+				<hr>
+				<div class="col-sm-12 justify-content-sm-end">
+					<button class="btn btn-primary col-sm-1" type="submit" name="upvote" value="upvote" formmethod="POST">发布</button>
+					
+				</div>
+			</form>
+			
+
+			
+
+			<div class="form-row">
+				<div class="form-group col-md-8"></div>
+			</div>
+
+
+
+		
+			
+
+     
+      
+	</div> <!-- /container -->
+	
+	<hr>
+	<div class=" container">
+		<footer class="row justify-content-between">
+		<div class="col-6">
+			<p><span>&copy; 2020 Reina all rights reserved.</span></p>
+		</div>
+		<div class="col-6" style="text-align: right;">
+			<p> <span> Powered by Bootstrap</span></p>
+		</div>
+		</footer>
+	</div>
+	
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  </body>
+</html>
