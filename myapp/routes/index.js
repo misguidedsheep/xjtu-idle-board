@@ -5,12 +5,11 @@ const database = require('../database');
 const { join } = require('path');
 // const { send } = require('process');
 const ejs = require('ejs');
+const { search } = require('../app');
 // const { render } = require('pug');
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  let query_sql = 'SELECT * FROM item';
-  database.connection.query(query_sql, function(err, result){
+function sql_respond(sql, res){
+  database.connection.query(sql, function(err, result){
     if (err) console.error(err);
     let cardSet = ''
     result.forEach(item => {
@@ -33,6 +32,49 @@ router.get('/', function(req, res, next) {
       cardSet: cardSet
     });
   });  
+}
+
+
+router.get('/search=:searchExp-sort=:sortMode-min=:minPrice-max=:maxPrice', function(req, res){
+  
+  let toSearch = true;
+  let toSort = true;
+
+  let sortMode = req.params.sortMode;
+  let searchExp = req.params.searchExp;
+  
+  let rangeCode = ' item_price BETWEEN ' + req.params.minPrice + ' and ' + req.params.maxPrice;
+  
+  // for-debug
+  console.log('SORT MATCHED!')
+  
+  switch (sortMode){
+    case 'price_up': sortCode = ' ORDER BY item_price ASC'; break;
+    case 'price_down': sortCode = ' ORDER BY item_price DESC'; break;
+    case 'date_down': sortCode = ' ORDER BY item_id DESC'; break;
+    case 'new_to_old': sortCode = ' ORDER BY old_new_rate DESC'; break
+    case 'null': toSort = false; break;
+    default: res.send('Invalid Sort Method ERROR'); break;
+  }
+
+  if(searchExp == 'null' ||  searchExp == '') toSearch = false; 
+  else searchCode = " and item_name LIKE \'%" + searchExp + "%\'";
+  let sqlCode = 'SELECT * FROM item WHERE' + rangeCode + (toSearch? searchCode : '') + (toSort? sortCode : ''); 
+  sql_respond(sqlCode, res)
 });
+
+
+
+/* GET home page. */
+router.get('/', function(req, res, next) {
+  let query_sql = 'SELECT * FROM item ORDER BY item_id desc';
+  sql_respond(query_sql, res);
+});
+
+
+
+
+
+
 
 module.exports = router;

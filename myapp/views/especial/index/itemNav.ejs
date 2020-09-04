@@ -5,11 +5,10 @@
   </button>
   <div id="itemNavbarBody" class="collapse navbar-collapse">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active"><a href="#" class="nav-link">最新发布<span class="sr-only">(current)</span></a></li>
-      <li class="nav-item"><a href="#" class="nav-link">价格</a></li>
-      <li class="nav-item"><a href="#" class="nav-link">成色</a></li>
-      <li class="nav-item"><a href="#" class="nav-link">浏览量</a></li>
-      <li class="nav-item dropdown">
+      <li id="newestSort" class="nav-item"><a id="newestSortLink" href="search=null-sort=date_down-min=0-max=999999#itemNav" class="nav-link">最新发布<span class="sr-only">(current)</span></a></li>
+      <li id="priceSort" class="nav-item"><a id="priceSortLink" href="search=null-sort=price_up-min=0-max=999999#itemNav" class="nav-link">价格</a></li>
+      <li id='oldNewSort' class="nav-item"><a id="oldNewSortLink" href="search=null-sort=new_to_old-min=0-max=999999#itemNav" class="nav-link">成色</a></li>
+      <!-- <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             分类
         </a>
@@ -18,15 +17,84 @@
             <a class="dropdown-item" href="#">电器</a>
             <a class="dropdown-item" href="#">美妆</a>
         </div>
-      </li>
+      </li> -->
     </ul>
     <form class="form-inline navbar-dark bg-dark my-2 my-lg-0" >
-      <input type="text" class="form-control-sm col-3" placeholder="最低">
+      <input id="priceMinInput" type="text" class="form-control-sm col-3" placeholder="最低">
       <span class="navbar-text col-1"> - </span>
-      <input type="text" class="form-control-sm col-3" placeholder="最高">
-      <button type="button" class="btn col-4 btn-sm btn-primary ml-3 ">设置价格区间</button>
+      <input id="priceMaxInput" type="text" class="form-control-sm col-3" placeholder="最高">
+      <button id="setRangeBtn" type="button" class="btn col-4 btn-sm btn-primary ml-3 ">设置价格区间</button>
     </form>
   </div>
-
 </nav>
 <!-- 排序筛选导航栏结束 -->
+
+<script>
+  function initItemNav(){
+    currPath = window.location.pathname;
+    if (currPath == '/' || currPath == '/index.html'){
+      let currClass = document.getElementById('newestSort').classList;
+      currClass.add('active');
+      return;
+    }
+
+    let regex = /\/search=(.*)-sort=(.*)-min=(\d+)-max=(\d+)/;
+    let result = currPath.match(regex);
+
+    var searchExp = result[1];
+    var sortMode = result[2];
+    var priceMin = result[3];
+    var priceMax = result[4];
+
+    // 顶部搜索栏
+    if (searchExp == 'null') document.getElementById('topSearch').value='';
+    else document.getElementById('topSearch').value= searchExp;
+
+    // 排序区
+    let activeID = '';
+    let hrefFwd = 'search=' + searchExp + '-sort=';
+    let hrefEnd = '-' + 'min=' + priceMin + '-max=' + priceMax + '#itemNav';
+    switch (sortMode){
+      case 'price_up': 
+        activeID = 'priceSort';
+        document.getElementById('priceSortLink').innerHTML = '价格↑';
+        document.getElementById('priceSortLink').href = hrefFwd + 'price_down' + hrefEnd;
+        break;
+      case 'price_down':
+        activeID = 'priceSort';
+        document.getElementById('priceSortLink').innerHTML = '价格↓'; 
+        document.getElementById('priceSortLink').href = hrefFwd + 'price_up' + hrefEnd;
+        break;
+      case 'date_down':
+        activeID = 'newestSort';
+        document.getElementById('priceSortLink').innerHTML = '价格';
+        document.getElementById('priceSortLink').href = hrefFwd + 'price_up' + hrefEnd;
+        break;
+      case 'new_to_old':
+        activeID = 'oldNewSort';
+        document.getElementById('priceSortLink').innerHTML = '价格';
+        document.getElementById('priceSortLink').href = hrefFwd + 'price_up' + hrefEnd;
+        break;
+      case 'null':
+        activeID = 'newestSort';
+        document.getElementById('priceSortLink').innerHTML = '价格';
+        document.getElementById('priceSortLink').href = hrefFwd + 'price_up' + hrefEnd;
+      default: break;
+    }
+    document.getElementById('newestSortLink').href = hrefFwd + 'date_down' + hrefEnd;
+    document.getElementById('oldNewSortLink').href = hrefFwd + 'new_to_old' + hrefEnd;
+    // 移除所有 active
+    document.getElementById('newestSort').classList.remove('active');
+    document.getElementById('priceSort').classList.remove('active');
+    document.getElementById('oldNewSortLink').classList.remove('active');
+    // 添加当前 active
+    document.getElementById(activeID).classList.add('active');
+
+    // 价格区间部分
+    if (!(priceMin == 0 && priceMax == 999999)){
+      document.getElementById('priceMinInput').value = priceMin;
+      document.getElementById('priceMaxInput').value = priceMax;
+    } 
+    
+  }
+</script>

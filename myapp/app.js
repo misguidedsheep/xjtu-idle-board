@@ -7,7 +7,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var submitRouter = require('./routes/submit')
 var database = require('./database');
-const { time } = require('console');
+const { time, error } = require('console');
 
 var app = express();
 
@@ -57,6 +57,7 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   console.error(err)
+  res.end(err);
 });
 
 module.exports = app;
