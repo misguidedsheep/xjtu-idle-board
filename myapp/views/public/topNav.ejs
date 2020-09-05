@@ -24,30 +24,22 @@
 
 
 <script>
+    // 搜索事件
     document.getElementById('topSearch').onkeydown = function(event){
         let searchExp = document.getElementById('topSearch').value;
         if (event.keyCode == 13){
-            console.log('success!');
-            currPath = window.location.pathname;
+            // for-debug --reserve
+            console.log('Enter in topSearch detected!');
+            // 获取当前路径
+            let currPath = window.location.pathname;
             if (currPath == '/' || currPath == '/index.html'){
-                console.log('success!');
-                console.log("/search=" + searchExp +  "-sort=null-min=0-max=999999");
-                window.location.href = "/search=" + searchExp +  "-sort=null-min=0-max=999999#itemNav"
-                return false;
+                redirectSpecial(searchExp, 'null', 0, 999999);
             }else{
                 let regex = /\/search=(.*)-sort=(.*)-min=(\d+)-max=(\d+)/;
                 let result = currPath.match(regex);
-                
-                let sortMode = result[2];
-                let priceMin = result[3];
-                let priceMax = result[4];
-                
-                
-                searchHref = 'search=' + searchExp + '-sort=' + sortMode +'-' + 'min=' + priceMin + '-max=' + priceMax + '#itemNav';
-                window.location.href = searchHref
-                return false;
+                redirectSpecial(searchExp, result[2], result[3], result[4]);
             }
-            
+            return false
         }
     }
 </script>

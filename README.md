@@ -3,6 +3,7 @@
 
 基于
 - Bootstrap
+- jQuery
 - Nodejs, Express, EJS
 
 node_modules不上传, 可使用`npm install`补全模块

@@ -4,7 +4,7 @@
     <span class=" navbar-toggler-icon"></span>
   </button>
   <div id="itemNavbarBody" class="collapse navbar-collapse">
-    <ul class="navbar-nav mr-auto">
+    <ul class="navbar-nav col-5 mr-auto">
       <li id="newestSort" class="nav-item"><a id="newestSortLink" href="search=null-sort=date_down-min=0-max=999999#itemNav" class="nav-link">最新发布<span class="sr-only">(current)</span></a></li>
       <li id="priceSort" class="nav-item"><a id="priceSortLink" href="search=null-sort=price_up-min=0-max=999999#itemNav" class="nav-link">价格</a></li>
       <li id='oldNewSort' class="nav-item"><a id="oldNewSortLink" href="search=null-sort=new_to_old-min=0-max=999999#itemNav" class="nav-link">成色</a></li>
@@ -23,78 +23,103 @@
       <input id="priceMinInput" type="text" class="form-control-sm col-3" placeholder="最低">
       <span class="navbar-text col-1"> - </span>
       <input id="priceMaxInput" type="text" class="form-control-sm col-3" placeholder="最高">
-      <button id="setRangeBtn" type="button" class="btn col-4 btn-sm btn-primary ml-3 ">设置价格区间</button>
+      <button id="setRangeBtn" onclick="setPriceRange()" type="button" class="btn col-4 btn-sm btn-primary ml-3 ">设置价格区间</button>
     </form>
   </div>
 </nav>
 <!-- 排序筛选导航栏结束 -->
 
 <script>
+  // 根据请求的URL渲染itemNav & topNav
   function initItemNav(){
     currPath = window.location.pathname;
     if (currPath == '/' || currPath == '/index.html'){
-      let currClass = document.getElementById('newestSort').classList;
-      currClass.add('active');
+      $('#newestSort').removeClass('active');
+      $('#priceSort').removeClass('active');
+      $('#oldNewSortLink').removeClass('active');
+      $('#newestSort').addClass('active');
       return;
     }
 
     let regex = /\/search=(.*)-sort=(.*)-min=(\d+)-max=(\d+)/;
     let result = currPath.match(regex);
 
-    var searchExp = result[1];
-    var sortMode = result[2];
-    var priceMin = result[3];
-    var priceMax = result[4];
+    // 顶部搜索栏部分
+    if (result[1] == 'null') $('#topSearch').value='';
+    else $('#topSearch').val(result[1]);
 
-    // 顶部搜索栏
-    if (searchExp == 'null') document.getElementById('topSearch').value='';
-    else document.getElementById('topSearch').value= searchExp;
-
-    // 排序区
+    // 排序部分
     let activeID = '';
-    let hrefFwd = 'search=' + searchExp + '-sort=';
-    let hrefEnd = '-' + 'min=' + priceMin + '-max=' + priceMax + '#itemNav';
-    switch (sortMode){
-      case 'price_up': 
-        activeID = 'priceSort';
-        document.getElementById('priceSortLink').innerHTML = '价格↑';
-        document.getElementById('priceSortLink').href = hrefFwd + 'price_down' + hrefEnd;
-        break;
-      case 'price_down':
-        activeID = 'priceSort';
-        document.getElementById('priceSortLink').innerHTML = '价格↓'; 
-        document.getElementById('priceSortLink').href = hrefFwd + 'price_up' + hrefEnd;
-        break;
-      case 'date_down':
-        activeID = 'newestSort';
-        document.getElementById('priceSortLink').innerHTML = '价格';
-        document.getElementById('priceSortLink').href = hrefFwd + 'price_up' + hrefEnd;
-        break;
-      case 'new_to_old':
-        activeID = 'oldNewSort';
-        document.getElementById('priceSortLink').innerHTML = '价格';
-        document.getElementById('priceSortLink').href = hrefFwd + 'price_up' + hrefEnd;
-        break;
-      case 'null':
-        activeID = 'newestSort';
-        document.getElementById('priceSortLink').innerHTML = '价格';
-        document.getElementById('priceSortLink').href = hrefFwd + 'price_up' + hrefEnd;
+    let priceSortInner = '价格';
+    let priceSortLinkChioce = 'price_up'
+    let hrefFwd = 'search=' + result[1] + '-sort=';
+    let hrefEnd = '-' + 'min=' + result[3] + '-max=' + result[4] + '#itemNav';
+    switch (result[2]){
+      case 'price_up':   activeID = 'priceSort';  priceSortInner = '价格↑'; priceSortLinkChioce = 'price_down'; break;
+      case 'price_down': activeID = 'priceSort';  priceSortInner = '价格↓'; priceSortLinkChioce = 'price_up';   break;
+      case 'date_down':  activeID = 'newestSort'; priceSortInner = '价格';  priceSortLinkChioce = 'price_up';   break;
+      case 'new_to_old': activeID = 'oldNewSort'; priceSortInner = '价格';  priceSortLinkChioce = 'price_up';   break;
+      case 'null': activeID = 'newestSort'; break;
       default: break;
     }
-    document.getElementById('newestSortLink').href = hrefFwd + 'date_down' + hrefEnd;
-    document.getElementById('oldNewSortLink').href = hrefFwd + 'new_to_old' + hrefEnd;
+    // 改变内容
+    $('#priceSortLink').html(priceSortInner);
+    // 改变链接
+    $('#newestSortLink').attr("href",  hrefFwd + 'date_down' + hrefEnd);
+    $('#priceSortLink').attr("href", hrefFwd + priceSortLinkChioce + hrefEnd);
+    $('#oldNewSortLink').attr("href",  hrefFwd + 'new_to_old' + hrefEnd);
     // 移除所有 active
-    document.getElementById('newestSort').classList.remove('active');
-    document.getElementById('priceSort').classList.remove('active');
-    document.getElementById('oldNewSortLink').classList.remove('active');
+    $('#newestSort').removeClass('active');
+    $('#priceSort').removeClass('active');
+    $('#oldNewSortLink').removeClass('active');
     // 添加当前 active
-    document.getElementById(activeID).classList.add('active');
-
-    // 价格区间部分
-    if (!(priceMin == 0 && priceMax == 999999)){
-      document.getElementById('priceMinInput').value = priceMin;
-      document.getElementById('priceMaxInput').value = priceMax;
-    } 
+    $('#' + activeID).addClass('active');
     
+
+    console.log(parseInt(result[3]) == 0);
+    // 价格区间部分
+    if (!(parseInt(result[3]) == 0 && parseInt(result[4]) == 999999)){
+      $('#priceMinInput').val(result[3]);
+      $('#priceMaxInput').val(result[4]);
+    } else{
+      $('#priceMinInput').val("");
+      $('#priceMaxInput').val("");
+    } 
   }
+
+  function setPriceRange(){
+    // 获取价格区间
+    let priceMin = parseInt($('#priceMinInput').val());
+    let priceMax = parseInt($('#priceMaxInput').val());
+
+    // 验证数据
+    if (isNaN(priceMin)) priceMin = 0;
+    if (isNaN(priceMax)) priceMax = 999999;
+
+    if (!(typeof priceMin == "number" && priceMin >=0) || !(typeof priceMax == "number" && priceMax >=0) || !(priceMin <= priceMax)){
+      alert('非法数据, 请检查数据合理性');
+      return;
+    }
+    
+    // 结合现有限制重定向
+    let currPath = window.location.pathname;
+      /* pathName为'/'或'/index.html'时 */
+    if (currPath == '/' || currPath == '/index.html'){
+      redirectSpecial('null', 'null', priceMin, priceMax);
+      return;
+    }
+      /* 其他情况(可以使用正则匹配) */
+    let regex = /\/search=(.*)-sort=(.*)-min=(\d+)-max=(\d+)/;
+    let result = currPath.match(regex);
+    redirectSpecial(result[1], result[2], priceMin, priceMax);
+    //return;
+  }
+
+  function redirectSpecial(searchExp, sortMode, priceMin, priceMax){
+    tarHref = 'search=' + searchExp + '-sort=' + sortMode +'-min=' + priceMin + '-max=' + priceMax + '#itemNav';
+    // for-debug --reserve
+    console.log('Redirecting to: ' + tarHref);
+    window.location.href = tarHref;
+  }
+
 </script>
