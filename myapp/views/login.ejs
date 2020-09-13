@@ -1,0 +1,27 @@
+<html lang="zh-CN">
+    <head>
+        <%- include ('public/head') %>
+    </head>
+    <body onload="initItemNav()">
+        <%- include ('especial/login/login') %>
+        <%- include ('public/bootstrapCore') %>
+        <script>
+            $("button").click(function(){
+                alert('here')
+                console.log('here!')
+                $.ajax({
+                    type: 'POST',
+                    url: '/login',
+                    data: $("form").serialize(),
+                    success: function(res){
+                        let token = JSON.parse(res).token;
+                        console.log(token);
+                        window.localStorage.setItem('xjtu-idle-token', token);
+                        window.alert('登录成功');
+                        window.location.href = '/'
+                    }
+                })
+            });
+        </script>
+    </body>
+</html>
