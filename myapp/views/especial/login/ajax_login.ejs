@@ -1,0 +1,16 @@
+<script>
+    $("button").click(function(){
+        $.ajax({
+            type: 'POST',
+            url: '/login',
+            data: $("form").serialize(),
+            success: function(res){
+                let token = JSON.parse(res).token;
+                console.log(token);
+                window.localStorage.setItem('xjtu-idle-token', token);
+                window.alert('登录成功');
+                window.location.href = '/'
+            }
+        })
+    });
+</script>

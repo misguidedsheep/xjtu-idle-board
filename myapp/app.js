@@ -8,10 +8,20 @@ var jsonParser = bodyParser.json();
 
 var indexRouter = require('./routes/index');
 var submitRouter = require('./routes/submit')
+var toSubmitRouter = require('./routes/tosubmit')
 var loginRouter = require('./routes/login')
 var tologinRouter = require('./routes/tologin')
+var getUserNameRouter = require('./routes/getUserName');
+var saveimgRouter = require('./routes/saveimg');
 
 var database = require('./database');
+
+var multer = require('multer');
+var upload = multer({
+  dest: 'public/upload/'
+})
+
+
 const { time, error } = require('console');
 // const jwtAuth = require('./public/javascripts/jwtAuth');
 const expressJwt = require('express-jwt');  
@@ -43,11 +53,24 @@ app.use(express.static(path.join(__dirname, 'public')));
 //   next()
 // })
 
+
+//主页
 app.use('/', indexRouter);
-app.use('/index.html', indexRouter);
-app.post('/submit.html', submitRouter);
+app.use('/index', indexRouter);
+
+// 发布界面
+app.get('/submit', submitRouter)
+app.post('/submit', toSubmitRouter);
+
+// 登录界面
 app.get('/login', loginRouter);
 app.post('/login', tologinRouter);
+
+// ajax获取用户名
+app.get('/getUserName', getUserNameRouter);
+
+// 接收图片
+app.post('/saveimg', upload.single('file') , saveimgRouter);
 
 // app.use(expressJwt({
 //   secret: 'ReinaSecretKey',

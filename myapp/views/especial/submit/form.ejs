@@ -1,0 +1,111 @@
+<h2>发布闲置</h2>
+<p id="welcome"></p>
+<hr>
+<form action="" method="post">
+    <div class="row ">
+        <div class="col-md-8">
+            <div class="row col-md-12" >
+                <div class="form-group col-sm-8">
+                    <label for="itemName">商品名称*</label>
+                    <input type="text" name="itemName" class="form-control" placeholder="item name" id="itemName">
+                    <small id="itemNameHelper" class="form-text text-muted">输入准确的商品名称, 更容易被搜索到</small>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="itemName">商品价格*</label>
+                    <input type="text" name="itemPrice" class="form-control" placeholder="item price" id="itemName">
+                </div>
+            </div>
+            
+            <div class="form-group col-sm-12">
+                <label for="itemDesc">商品简介*</label>
+                <input type="text" name="itemDesc" class="form-control" placeholder="item description" id="itemDesc">
+                <small id="itemDescHelper" class="form-text text-muted">简要的补充说明（50字以内）</small>
+            </div>
+            <div class="form-group col-sm-12">
+                <label for="oldNewRate">新旧程度</label>
+                <input type="range" name="oldNewRate" class="form-control-range" id="oldNewRate">
+            </div>
+
+            <div class="form-group col-sm-12">
+                <label for="oldNewRate">图片文件名(服务器)</label>
+                <input type="range" name="oldNewRate" class="form-control-range" id="oldNewRate">
+            </div>
+            
+            <!-- <div class="col-md-8 custom-file">
+                
+                <input type="file" accept="image/*" class="custom-file-input" id="validatedCustomFile" required>
+                <label for="validatedCustomFile" class="custom-file-label">上传照片*</label>
+                <div class="invalid-feedback">Example invalid custom file feedback</div>
+            </div> -->
+
+        </div>
+        <div class="form-group col-md-4">
+            <label for="file">上传封面图片</label>
+            <input type="file" name="file" id="uploadfile" data-browse-on-zone-click="true">
+        </div>
+        <script>
+            $(function(){
+                $("#uploadfile").fileinput({
+                    language: 'zh',
+                    theme: 'fas',
+                    uploadUrl: 'saveimg',
+                    async: false,
+                    ajaxSettings: {
+                        dataType: 'json',
+                        success: function(resJson) {
+                            // console.log(resJson);
+                            console.log('SUCCESS form debug')
+                        }
+                    }
+                })
+                $("#uploadfile").on('fileuploaded', function(event, data, previewId, index){
+                    console.log(data.response.fileName);
+                })
+            })
+            
+        </script>
+        <!-- <div class="col-md-4">
+            <img src="images/north.jpg"
+                style="background-image:url(./images/north.jpg)" class="img-thumbnail" >
+            <button id="btn_uploadPic" class="btn btn-outline-primary col-sm-12 mt-3" type="submit" name="upvote" value="upvote" formmethod="POST">上传封面图片</button>
+        </div> -->
+    </div>
+    <hr>
+    <div class=" col-sm-10">
+        <label for="" class="h5">运送方式</label>
+        <div class="row">
+            
+            <div class="form-check form-inline col-sm">
+                <input class=" form-check-input" type="checkbox" value="" name="postSupport" id="postSupport">
+                <label class=" form-check-label" for="postSupport">
+                    支持邮寄
+                </label>
+            </div>
+            <div class="form-check form-inline col-sm">
+                <input class=" form-check-input" type="checkbox" value="" name="faceToFace" id="faceToFace">
+                <label class=" form-check-label" for="faceToFace">
+                    支持当面交易
+                </label>
+            </div>
+            <div class="form-check form-inline col-sm">
+                <input class=" form-check-input" type="checkbox" value="" name="noNeedTrans" id="noNeedTrans">
+                <label class=" form-check-label" for="noNeedTrans">
+                    无需运送
+                </label>
+            </div>
+
+        </div>
+    </div>
+    
+    
+    <hr>
+    <div class="form-group col-sm-10">
+        <label for="remarks" class="h5">备注</label>
+        <input type="text" class="form-control" placeholder="remarks" name="remarks" id="remarks">
+    </div>
+    
+    <div class="col-sm-12 justify-content-sm-end">
+        <button id="btn_submit" class="btn btn-primary col-sm-1" type="button" name="upvote" value="upvote" formmethod="POST">发布</button>
+    </div>
+</form>
+

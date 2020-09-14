@@ -1,0 +1,23 @@
+<script>
+    $(function(){
+        token = window.localStorage.getItem('xjtu-idle-token');
+        if(token){
+            $.ajax({
+                type: 'GET',
+                url: '/getUserName',
+                headers:{'Authorization': `Bearer ${token}`},
+                success: function(res){
+                    
+                        if(res == 'ERROR'){
+                            console.log("Token Verify Error (/views/public/display.ejs)")
+                        }else{
+                            $("#topNav_user").html(res);
+                            $("#topNav_user").attr('href', '/myhome');
+                        }
+                    
+                }   
+            })
+        }
+        
+    })
+</script>

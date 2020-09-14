@@ -1,0 +1,18 @@
+<script>
+    $("#topNav_display").addClass("active");
+    $(function(){
+        token = window.localStorage.getItem('xjtu-idle-token');
+        $.ajax({
+            type: "get",
+            url: 'getUserName',
+            headers: {'Authorization': `Bearer ${token}`},
+            success(res){
+                if(res != 'ERROR')
+                    $('#welcome').html("当前用户: " + res);
+                else{
+                    $('#welcome').html('<a href="/login">请登录</a>');
+                }
+            }
+        })
+	})
+</script>

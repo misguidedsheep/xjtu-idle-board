@@ -1,0 +1,55 @@
+<script>
+    
+
+    $(function(){
+        $.fn.serializeObject = function(){
+            var o = {};
+            var a = this.serializeArray();
+            $.each(a, function() {
+                if (o[this.name] !== undefined) {
+                    if (!o[this.name].push) {
+                        o[this.name] = [o[this.name]];
+                    }
+                    o[this.name].push(this.value || '');
+                } else {
+                    o[this.name] = this.value || '';
+                }
+            });
+            return o;
+        };
+        $("#btn_submit").click(function(){
+            var token = window.localStorage.getItem('xjtu-idle-token'); 
+            console.log("Processing Ajax getUserName...");
+            $.ajax({
+                type: 'GET',
+                url: '/getUserName',
+                headers:{'Authorization': `Bearer ${token}`},
+                success: function(userName){
+                    if(userName != 'ERROR'){
+                        console.log("Processing Ajax Submit...");
+                        token = window.localStorage.getItem('xjtu-idle-token')
+                        submitData = $("form").serializeObject();
+                        submitData['userName'] = userName;
+                        $.ajax({
+                            type: 'POST',
+                            url: '/submit',
+                            data: JSON.stringify(submitData),
+                            headers: { 'Authorization': `Bearer ${token}`},
+                            success: function(res){
+                                console.log("Submit Success! (from: Page)");
+                                console.log(res);
+                                window.location.href = '/';
+                            }
+                        })
+                    }else{
+                        alert('请登录...')
+                        window.location.href = '/login';
+                    }
+                }
+            })
+
+            
+        })
+    })
+</script>
+

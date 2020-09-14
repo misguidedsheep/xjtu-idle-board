@@ -1,3 +1,4 @@
 module.exports = {
-    secretKey: 'reinaxxxxaxxxxanier'
+    secretKey: 'reinaxxxxaxxxxanier',
+    expiresIn: 3600
 };
