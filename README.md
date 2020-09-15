@@ -3,7 +3,7 @@
 
 技术栈
 
-- HTML CSS
+- HTML CSS JavaScript
 - Bootstrap
 - jQuery
 - AJAX
