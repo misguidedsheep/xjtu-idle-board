@@ -1,5 +1,5 @@
 <!-- 排序筛选导航栏 -->
-<nav class="navbar navbar-expand-md navbar-dark bg-dark justify-content-between" id="itemNav">
+<nav class="navbar navbar-expand-md navbar-dark bg-dark" id="itemNav">
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#itemNavbarBody" aria-controls="itemNavbarBody" aria-expanded="false" aria-label="Toggle navigation">
     <span class=" navbar-toggler-icon"></span>
   </button>
@@ -7,17 +7,6 @@
     <ul class="navbar-nav col-5 mr-auto">
       <li id="newestSort" class="nav-item"><a id="newestSortLink" href="search=null-sort=date_down-min=0-max=999999#itemNav" class="nav-link">最新发布<span class="sr-only">(current)</span></a></li>
       <li id="priceSort" class="nav-item"><a id="priceSortLink" href="search=null-sort=price_up-min=0-max=999999#itemNav" class="nav-link">价格</a></li>
-      <li id='oldNewSort' class="nav-item"><a id="oldNewSortLink" href="search=null-sort=new_to_old-min=0-max=999999#itemNav" class="nav-link">成色</a></li>
-      <!-- <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            分类
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">数码</a>
-            <a class="dropdown-item" href="#">电器</a>
-            <a class="dropdown-item" href="#">美妆</a>
-        </div>
-      </li> -->
     </ul>
     <form class="form-inline navbar-dark bg-dark my-2 my-lg-0" >
       <input id="priceMinInput" type="text" class="form-control-sm col-3" placeholder="最低">
@@ -36,7 +25,6 @@
     if (currPath == '/' || currPath == '/index.html'){
       $('#newestSort').removeClass('active');
       $('#priceSort').removeClass('active');
-      $('#oldNewSortLink').removeClass('active');
       $('#newestSort').addClass('active');
       return;
     }
@@ -58,7 +46,6 @@
       case 'price_up':   activeID = 'priceSort';  priceSortInner = '价格↑'; priceSortLinkChioce = 'price_down'; break;
       case 'price_down': activeID = 'priceSort';  priceSortInner = '价格↓'; priceSortLinkChioce = 'price_up';   break;
       case 'date_down':  activeID = 'newestSort'; priceSortInner = '价格';  priceSortLinkChioce = 'price_up';   break;
-      case 'new_to_old': activeID = 'oldNewSort'; priceSortInner = '价格';  priceSortLinkChioce = 'price_up';   break;
       case 'null': activeID = 'newestSort'; break;
       default: break;
     }
@@ -67,11 +54,9 @@
     // 改变链接
     $('#newestSortLink').attr("href",  hrefFwd + 'date_down' + hrefEnd);
     $('#priceSortLink').attr("href", hrefFwd + priceSortLinkChioce + hrefEnd);
-    $('#oldNewSortLink').attr("href",  hrefFwd + 'new_to_old' + hrefEnd);
     // 移除所有 active
     $('#newestSort').removeClass('active');
     $('#priceSort').removeClass('active');
-    $('#oldNewSortLink').removeClass('active');
     // 添加当前 active
     $('#' + activeID).addClass('active');
     
@@ -104,7 +89,7 @@
     // 结合现有限制重定向
     let currPath = window.location.pathname;
       /* pathName为'/'或'/index.html'时 */
-    if (currPath == '/' || currPath == '/index.html'){
+    if (currPath == '/' || currPath == '/index'){ 
       redirectSpecial('null', 'null', priceMin, priceMax);
       return;
     }
@@ -122,4 +107,29 @@
     window.location.href = tarHref;
   }
 
+</script>
+
+
+<script>
+  var b = $("#itemNav").offset().top
+  $(window).scroll(function(){
+      var a = $(this).scrollTop()
+      
+      if(a > b && !$("#itemNav").hasClass("fixed-top")){
+        console.log(a, b)
+        $("#topNav").css("display","none");
+        $("#itemNav").addClass("fixed-top");
+      }
+      if(a < b  && $("#itemNav").hasClass("fixed-top")){
+        $("#topNav").css("display","");
+        $("#itemNav").removeClass("fixed-top");
+       }
+  })
+  $(function(){
+    if(window.location.href.endsWith("#itemNav")){
+      $("#topNav").css("display","none");
+      $("#itemNav").addClass("fixed-top");
+    }
+
+  })
 </script>

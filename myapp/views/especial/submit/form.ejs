@@ -2,68 +2,61 @@
 <p id="welcome"></p>
 <hr>
 <form action="" method="post">
-    <div class="row ">
+    <div class="row">
+        
         <div class="col-md-8">
             <div class="row col-md-12" >
                 <div class="form-group col-sm-8">
                     <label for="itemName">商品名称*</label>
-                    <input type="text" name="itemName" class="form-control" placeholder="item name" id="itemName">
-                    <small id="itemNameHelper" class="form-text text-muted">输入准确的商品名称, 更容易被搜索到</small>
+                    <input type="text" name="itemName" class="form-control" placeholder="itemName" id="itemName">
+                    <small id="itemNameHelper" class="form-text text-muted">输入准确的商品名称, 更容易被搜索到(36字以内)</small>
+                    <div class="invalid-feedback">
+                        字符长度超出限制
+                    </div>
                 </div>
+            
                 <div class="form-group col-md-4">
                     <label for="itemName">商品价格*</label>
-                    <input type="text" name="itemPrice" class="form-control" placeholder="item price" id="itemName">
+                    <input type="text" name="itemPrice" class="form-control" placeholder="itemPrice" id="itemPrice">
+                    <small id="itemNameHelper" class="form-text text-muted">请输入整数, 最小值为1</small>
+                    <div class="invalid-feedback">
+                        请检查输入是否符合要求
+                    </div>
                 </div>
             </div>
             
             <div class="form-group col-sm-12">
-                <label for="itemDesc">商品简介*</label>
-                <input type="text" name="itemDesc" class="form-control" placeholder="item description" id="itemDesc">
-                <small id="itemDescHelper" class="form-text text-muted">简要的补充说明（50字以内）</small>
+                <label for="itemDescription">商品简介*</label>
+                <input type="text" name="itemDescription" class="form-control" placeholder="itemDescription" id="itemDescription" required>
+                <small id="itemDescriptionHelper" class="form-text text-muted">简要的补充说明（200字以内）</small>
+                <div class="invalid-feedback">
+                    字符长度超出限制
+                </div>
             </div>
             <div class="form-group col-sm-12">
-                <label for="oldNewRate">新旧程度</label>
-                <input type="range" name="oldNewRate" class="form-control-range" id="oldNewRate">
+                <label for="itemOldNewRate">新旧程度描述</label>
+                <input type="text" name="itemOldNewRate" class="form-control" placeholder="itemOldNewRate" id="itemOldNewRate">
+                <small id="itemDescriptionHelper" class="form-text text-muted">36字以内</small>
+                <div class="invalid-feedback">
+                    字符长度超出限制
+                </div>
             </div>
 
             <div class="form-group col-sm-12">
-                <label for="oldNewRate">图片文件名(服务器)</label>
-                <input type="range" name="oldNewRate" class="form-control-range" id="oldNewRate">
+                <label for="coverFileName">服务器封面图片文件名</label>
+                <input type="text" name="coverFileName" class="form-control disable" placeholder="coverFileName" id="coverFileName" readonly>
+                <small id="itemNameHelper" class="form-text text-muted">上传图片后自动生成</small>
             </div>
-            
-            <!-- <div class="col-md-8 custom-file">
-                
-                <input type="file" accept="image/*" class="custom-file-input" id="validatedCustomFile" required>
-                <label for="validatedCustomFile" class="custom-file-label">上传照片*</label>
-                <div class="invalid-feedback">Example invalid custom file feedback</div>
-            </div> -->
-
+            <div class="invalid-feedback">
+                请上传图片
+            </div>
         </div>
+
         <div class="form-group col-md-4">
             <label for="file">上传封面图片</label>
             <input type="file" name="file" id="uploadfile" data-browse-on-zone-click="true">
         </div>
-        <script>
-            $(function(){
-                $("#uploadfile").fileinput({
-                    language: 'zh',
-                    theme: 'fas',
-                    uploadUrl: 'saveimg',
-                    async: false,
-                    ajaxSettings: {
-                        dataType: 'json',
-                        success: function(resJson) {
-                            // console.log(resJson);
-                            console.log('SUCCESS form debug')
-                        }
-                    }
-                })
-                $("#uploadfile").on('fileuploaded', function(event, data, previewId, index){
-                    console.log(data.response.fileName);
-                })
-            })
-            
-        </script>
+        
         <!-- <div class="col-md-4">
             <img src="images/north.jpg"
                 style="background-image:url(./images/north.jpg)" class="img-thumbnail" >
@@ -76,20 +69,20 @@
         <div class="row">
             
             <div class="form-check form-inline col-sm">
-                <input class=" form-check-input" type="checkbox" value="" name="postSupport" id="postSupport">
-                <label class=" form-check-label" for="postSupport">
+                <input class=" form-check-input" type="checkbox" value="" name="deliverByPost" id="deliverByPost">
+                <label class=" form-check-label" for="deliverByPost">
                     支持邮寄
                 </label>
             </div>
             <div class="form-check form-inline col-sm">
-                <input class=" form-check-input" type="checkbox" value="" name="faceToFace" id="faceToFace">
-                <label class=" form-check-label" for="faceToFace">
+                <input class=" form-check-input" type="checkbox" value="" name="deliverByFace" id="deliverByFace">
+                <label class=" form-check-label" for="deliverByFace">
                     支持当面交易
                 </label>
             </div>
             <div class="form-check form-inline col-sm">
-                <input class=" form-check-input" type="checkbox" value="" name="noNeedTrans" id="noNeedTrans">
-                <label class=" form-check-label" for="noNeedTrans">
+                <input class=" form-check-input" type="checkbox" value="" name="deliverNoNeed" id="deliverNoNeed">
+                <label class=" form-check-label" for="deliverNoNeed">
                     无需运送
                 </label>
             </div>
@@ -102,6 +95,10 @@
     <div class="form-group col-sm-10">
         <label for="remarks" class="h5">备注</label>
         <input type="text" class="form-control" placeholder="remarks" name="remarks" id="remarks">
+        <small id="itemDescriptionHelper" class="form-text text-muted">100字以内</small>
+        <div class="invalid-feedback">
+            字符长度超出限制
+        </div>
     </div>
     
     <div class="col-sm-12 justify-content-sm-end">

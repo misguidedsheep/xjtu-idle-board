@@ -1,0 +1,17 @@
+<script>
+    $(function(){
+        $("#uploadfile").fileinput({
+            language: 'zh',
+            theme: 'fas',
+            uploadUrl: 'saveimg',
+            async: false,
+            ajaxSettings: {
+                dataType: 'json'
+            }
+        })
+        $("#uploadfile").on('fileuploaded', function(event, data, previewId, index){    
+            $("#coverFileName").val(data.response.fileName);
+        })
+    })
+    
+</script>

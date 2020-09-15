@@ -2,6 +2,7 @@
     
 
     $(function(){
+        //用于将表单数据转化为JSON的函数
         $.fn.serializeObject = function(){
             var o = {};
             var a = this.serializeArray();
@@ -17,7 +18,14 @@
             });
             return o;
         };
+
+
         $("#btn_submit").click(function(){
+            //清空表单验证状态
+            $("input").removeClass("is-invalid");
+            
+
+            // 验证token
             var token = window.localStorage.getItem('xjtu-idle-token'); 
             console.log("Processing Ajax getUserName...");
             $.ajax({
@@ -26,6 +34,28 @@
                 headers:{'Authorization': `Bearer ${token}`},
                 success: function(userName){
                     if(userName != 'ERROR'){
+
+                        //验证表单输入
+                        // 商品名称
+                        if($("#itemName").val().length > 36) $("#itemName").addClass("is-invalid");
+                        // 商品价格
+                        var price = Number($("#itemPrice").val())
+                        if(isNaN(price) || parseInt(price) < 1) $("#itemPrice").addClass("is-invalid");
+                        // 商品简介
+                        if($("#itemDescription").val().length > 200) $("#itemDescription").addClass("is-invalid");
+                        // 新旧程度描述
+                        if($("#itemOldNewRate").val().length > 200) $("#itemOldNewRate").addClass("is-invalid");
+                        // 封面
+                        if($("#coverFileName").val() == '') $("#coverFileName").addClass("is-invalid");
+                        // 备注
+                        if($("#remarks").val().length > 200) $("#remarks").addClass("is-invalid")
+
+
+                        if($("input").hasClass("is-invalid")) {
+                            console.log("Error in input. (from ajax_submit.ejs)")
+                            return;
+                        }
+                        
                         console.log("Processing Ajax Submit...");
                         token = window.localStorage.getItem('xjtu-idle-token')
                         submitData = $("form").serializeObject();
@@ -33,22 +63,23 @@
                         $.ajax({
                             type: 'POST',
                             url: '/submit',
-                            data: JSON.stringify(submitData),
+                            data: {formData: JSON.stringify(submitData)},
                             headers: { 'Authorization': `Bearer ${token}`},
                             success: function(res){
                                 console.log("Submit Success! (from: Page)");
                                 console.log(res);
                                 window.location.href = '/';
+                            },
+                            error: function(res){
+                                console.error(res);
                             }
                         })
                     }else{
-                        alert('请登录...')
-                        window.location.href = '/login';
+                        alert('在提交之前请先登录~')
+                        window.open("/login")
                     }
                 }
-            })
-
-            
+            })            
         })
     })
 </script>

@@ -1,5 +1,5 @@
 <!--顶部导航栏 -->
-<nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark ">
+<nav class="navbar navbar-expand-md fixed-top navbar-dark bg-dark " id="topNav">
     <a class="navbar-brand" href="index">XJTU Idle Board</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarBody" aria-controls="navbarBody" aria-expanded="false" aria-label="Toggle navigation">
         <span class=" navbar-toggler-icon"></span>
@@ -27,12 +27,13 @@
     // 搜索事件
     document.getElementById('topSearch').onkeydown = function(event){
         let searchExp = document.getElementById('topSearch').value;
+        if (searchExp == '') searchExp = 'null'
         if (event.keyCode == 13){
             // for-debug --reserve
             console.log('Enter in topSearch detected!');
             // 获取当前路径
             let currPath = window.location.pathname;
-            if (currPath == '/' || currPath == '/index.html'){
+            if (currPath == '/' || currPath == '/index'){
                 redirectSpecial(searchExp, 'null', 0, 999999);
             }else{
                 let regex = /\/search=(.*)-sort=(.*)-min=(\d+)-max=(\d+)/;
