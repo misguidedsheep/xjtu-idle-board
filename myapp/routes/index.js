@@ -8,7 +8,7 @@ const ejs = require('ejs');
 const { search } = require('../app');
 // const { render } = require('pug');
 
-function sql_respond(sql, res){
+function getCardSet(sql, res){
   database.connection.query(sql, function(err, result){
     if (err) console.error(err);
     let cardSet = ''
@@ -20,6 +20,7 @@ function sql_respond(sql, res){
         itemName : item.ItemName,
         itemPrice : item.ItemPrice,
         itemDescription: item.ItemDescription,
+        itemID: item.ItemID,
         trans:{
           deliverByPost: item.DeliverByPost? true : false,
           deliverByFace:  item.DeliverByFace? true : false,
@@ -56,7 +57,7 @@ router.get('/search=:searchExp-sort=:sortMode-min=:minPrice-max=:maxPrice', func
   if(searchExp == 'null' ||  searchExp == '') toSearch = false; 
   else searchCode = " and ItemName LIKE \'%" + searchExp + "%\'";
   let sqlCode = 'SELECT * FROM Items WHERE' + rangeCode + (toSearch? searchCode : '') + (toSort? sortCode : ''); 
-  sql_respond(sqlCode, res)
+  getCardSet(sqlCode, res)
 });
 
 

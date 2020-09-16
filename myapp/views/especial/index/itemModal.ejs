@@ -1,0 +1,65 @@
+<!--Item Modal -->
+
+<div class="modal fade" id="itemModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="itemModalTitle"><!--itemName --></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body container">
+            <img id="itemModalCover" style="width: 100%;"><!-- coverFileName -->
+            <div class="row" style="margin-left: 0rem;">
+                <h2 id="itemModalPrice" class="align-self-center" style="margin-top: 1rem;">￥</h2><!-- itemPrice -->
+            
+                <div id="itemModalBandageArea" class="align-self-center" style="margin-top: 0.9rem; margin-left: 1rem;">
+                    <span id="itemModalBandagePost" class=" badge badge-primary">邮寄</span>
+                    <span id="itemModalBandageFace" class=" badge badge-success">当面交易</span>
+                    <span id="itemModalBandageNoNeed" class=" badge badge-success">无需运送</span>
+                </div>
+            </div>
+            
+            <hr>
+            <h5>简介</h5>
+            <p id="itemModalDescription"></p>
+            <hr>
+            <h5>新旧描述</h5>
+            <p id="itemModalOldNewRate"></p>
+
+            <small id="itemModalRemarks"></small>
+
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+        </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    getItemInfo = function(itemID){
+        $.ajax({
+            type: 'GET',
+            url: '/getItemInfo',
+            data: {'itemID': itemID },
+            success: (itemJson) => {
+                $(".badge").css("display","");
+                $(".badge").css("font-size","0.9rem");
+                $("#itemModalCover").attr('src','upload/' + itemJson.coverFileName);
+                $("#itemModalTitle").html(itemJson.itemName);
+                $("#itemModalPrice").html("￥" + itemJson.itemPrice);
+                if(!itemJson.deliverByPost) $("#itemModalBandagePost").css("display", 'none');
+                if(!itemJson.deliverByFace) $("#itemModalBandageFace").css("display", 'none');
+                if(!itemJson.deliverNoNeed) $("#itemModalBandageNoNeed").css("display", 'none');
+                $("#itemModalDescription").html(itemJson.itemDescription);
+                $("#itemModalOldNewRate").html(itemJson.itemOldNewRate);
+                $("#itemModalRemarks").html("备注：" + itemJson.remarks);
+
+            }
+        })
+    }
+    
+</script>

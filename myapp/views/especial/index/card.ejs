@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card" id="itemID<%= itemID %>" onclick="getItemInfo(this.id.replace('itemID', ''))" data-toggle="modal" data-target="#itemModal">
     <img class="card-img-top" src="upload/<%= coverFileName %>" onerror='$(this).css("display", "none")'>
     <div class="card-body">
         <h5 class="card-title"><%= itemName %></h5>
@@ -10,7 +10,7 @@
             <span class=" badge badge-primary">邮寄</span>
         <%}%>
         <% if (trans.deliverByFace) {%> 
-            <span class=" badge badge-success">面交</span>
+            <span class=" badge badge-success">当面交易</span>
         <%}%>
         <% if (trans.deliverNoNeed) {%> 
             <span class=" badge badge-success">无需运送</span>

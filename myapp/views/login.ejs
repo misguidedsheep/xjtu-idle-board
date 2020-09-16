@@ -6,5 +6,13 @@
         <%- include ('public/bootstrapCore') %>
         <%- include ('especial/login/login') %>
         <%- include ('especial/login/ajax_login') %>
+        <script>
+            $(function(){
+                let offset = ($(window).height()-$("#login").height())*3/8
+                $("#login").offset({top: offset} )
+                console.log("居中完毕", offset) 
+            })
+        </script>
     </body>
 </html>
+

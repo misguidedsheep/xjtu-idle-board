@@ -1,15 +1,27 @@
 <script>
     $("button").click(function(){
+        if($("#userID").val() == ""){
+            $("#userID").addClass("is-invalid");
+            return;
+        }
+        if($("#key").val() == ""){
+            $("#key").addClass("is-invalid");
+            return;
+        } 
         $.ajax({
             type: 'POST',
             url: '/login',
             data: $("form").serialize(),
             success: function(res){
-                let token = JSON.parse(res).token;
-                console.log(token);
-                window.localStorage.setItem('xjtu-idle-token', token);
-                window.alert('登录成功');
-                window.location.href = '/'
+                if(res!='ERROR'){
+                    let token = JSON.parse(res).token;
+                    console.log(token);
+                    window.localStorage.setItem('xjtu-idle-token', token);
+                    window.alert('登录成功');
+                    window.location.href = '/'
+                }else{
+                    window.alert('登录失败');
+                }
             }
         })
     });

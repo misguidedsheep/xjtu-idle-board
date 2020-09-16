@@ -13,7 +13,7 @@ var loginRouter = require('./routes/login')
 var tologinRouter = require('./routes/tologin')
 var getUserNameRouter = require('./routes/getUserName');
 var saveimgRouter = require('./routes/saveimg');
-
+var getItemInfoRouter = require('./routes/getItemInfo')
 var database = require('./database');
 
 var multer = require('multer');
@@ -71,6 +71,9 @@ app.get('/getUserName', getUserNameRouter);
 
 // 接收图片
 app.post('/saveimg', upload.single('file') , saveimgRouter);
+
+// 获取商品信息
+app.get('/getItemInfo', getItemInfoRouter);
 
 // app.use(expressJwt({
 //   secret: 'ReinaSecretKey',

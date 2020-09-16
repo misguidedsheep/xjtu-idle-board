@@ -13,7 +13,7 @@ router.use(function(req, res, next) {
             ' DeliverByFace, DeliverNoNeed, ' + 
             'Remarks, UserName) values' + `('${form.itemName}', ${form.itemPrice}, '${form.itemDescription}', '${form.itemOldNewRate}', ` + 
             `'${form.coverFileName}', ${(form.hasOwnProperty("deliverByPost"))? true: false}, ` + 
-            `${(form.hasOwnProperty("DeliverByFace"))? true: false}, ${(form.hasOwnProperty("deliverNoNeed"))? true: false}, ` + 
+            `${(form.hasOwnProperty("deliverByFace"))? true: false}, ${(form.hasOwnProperty("deliverNoNeed"))? true: false}, ` + 
             `'${form.remarks}' , '${form.userName}')`;
     result = database.connection.query(sql, function(err, result){
         if(err) console.error(err);
