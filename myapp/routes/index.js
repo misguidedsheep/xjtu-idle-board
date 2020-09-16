@@ -27,9 +27,7 @@ function sql_respond(sql, res){
         }
       }); 
     });
-    res.render('index', {
-      cardSet: cardSet
-    });
+    res.send(cardSet);
   });  
 }
 
@@ -65,8 +63,7 @@ router.get('/search=:searchExp-sort=:sortMode-min=:minPrice-max=:maxPrice', func
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  let query_sql = 'SELECT * FROM Items ORDER BY ItemID desc';
-  sql_respond(query_sql, res);
+  res.render('index');
 });
 
 

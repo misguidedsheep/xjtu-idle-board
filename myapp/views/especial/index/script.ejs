@@ -1,0 +1,167 @@
+<script>
+    // 渲染itemNav & topNav
+    
+    
+    // 根据价格区间筛选商品
+    function setPriceRange(){
+      // 获取价格区间
+      let priceMin = parseInt($('#priceMinInput').val());
+      let priceMax = parseInt($('#priceMaxInput').val());
+  
+      // 验证数据
+      if (isNaN(priceMin)) priceMin = 0;
+      if (isNaN(priceMax)) priceMax = 999999;
+  
+      if (!(typeof priceMin == "number" && priceMin >=0) || !(typeof priceMax == "number" && priceMax >=0) || !(priceMin <= priceMax)){
+        alert('非法数据, 请检查数据合理性');
+        return;
+      }else{
+        // 检验有效, 赋值
+        min = priceMin;
+        max = priceMax;
+        reloadCard();
+      }
+    }
+
+  
+  </script>
+  
+  
+  <script>
+    // 滚轮监听
+    var b = $("#itemNav").offset().top
+    $(window).scroll(function(){
+        var a = $(this).scrollTop()
+        
+        if(a > b && !$("#itemNav").hasClass("fixed-top")){
+          console.log(a, b)
+          $("#topNav").css("display","none");
+          $("#itemNav").addClass("fixed-top");
+        }
+        if(a < b  && $("#itemNav").hasClass("fixed-top")){
+          $("#topNav").css("display","");
+          $("#itemNav").removeClass("fixed-top");
+         }
+    })
+  </script>
+  
+
+  <script>
+    // 搜索事件
+    $("#topSearch").keydown(function(){
+        if (event.which == 13){
+          console.log("keydown触发")
+          search = $('#topSearch').val();
+          console.log('Search: ' ,  search)
+          getAjaxUrl();
+          if (search == '') search = 'null'
+          reloadCard();
+        }
+    })
+  </script>
+
+
+  
+  <script>
+    
+    var search = "null";
+    var sort = "date_down";
+    var min = "0";
+    var max = "999999";
+    // 加载默认卡片, 初始化全局变量
+    $(function(){
+        
+        window.getAjaxUrl = () => {
+          console.log('getAjaxUrl: ' + `/search=${search}-sort=${sort}-min=${min}-max=${max}`)
+          return `/search=${search}-sort=${sort}-min=${min}-max=${max}`;
+        }
+
+
+        window.reloadCardAjax = (url) => {
+            $.ajax({
+                type: 'GET',
+                url: url,
+                success: function(cardHtml){
+                  $("#cardAreas").html(cardHtml)
+                  console.log(url);
+                  let regex = /\/?search=(.*)-sort=(.*)-min=(\d+)-max=(\d+)/;
+                  let result = url.match(regex);
+                  console.log(result);
+                  search = result[1];
+                  sort = result[2];
+                  min = result[3];
+                  max = result[4];
+                  console.log("reloadCardAjax: ", search, sort, min, max)
+                  getAjaxUrl();
+                  initItemNav()
+                }
+            })
+        }
+
+
+        window.reloadCard = () => {reloadCardAjax(getAjaxUrl())}
+
+        function initItemNav(){
+            
+            // currPath = window.location.pathname;
+            // if (currPath == '/' || currPath == '/index.html'){
+            //     $('#newestSort').removeClass('active');
+            //     $('#priceSort').removeClass('active');
+            //     $('#newestSort').addClass('active');
+            //     return;
+            // }
+        
+            
+        
+            // 顶部搜索栏部分
+            if (search == 'null') $('#topSearch').value='';
+            else $('#topSearch').val(search);
+        
+            // 排序部分
+            let activeID = '';
+            let priceSortInner = '价格';
+            let priceSortLinkChioce = 'price_up'
+            let hrefFwd = 'search=' + search + '-sort=';
+            let hrefEnd = '-' + 'min=' + min + '-max=' + max;
+            switch (sort){
+                case 'price_up':   activeID = 'priceSort';  priceSortInner = '价格↑'; priceSortLinkChioce = 'price_down'; break;
+                case 'price_down': activeID = 'priceSort';  priceSortInner = '价格↓'; priceSortLinkChioce = 'price_up';   break;
+                case 'date_down':  activeID = 'newestSort'; priceSortInner = '价格';  priceSortLinkChioce = 'price_up';   break;
+                case 'null': activeID = 'newestSort'; break;
+                default: break;
+            }
+            console.log("be about to change href")
+            // 改变内容
+            $('#priceSortLink').html(priceSortInner);
+           
+            // 改变链接
+            $('#newestSortLink').attr("href", `javascript:window.reloadCardAjax("${hrefFwd}date_down${hrefEnd}")`);
+            $('#priceSortLink').attr("href", `javascript:window.reloadCardAjax("${hrefFwd}${priceSortLinkChioce}${hrefEnd}")`);
+            // 移除所有 active
+            $('#newestSort').removeClass('active');
+            $('#priceSort').removeClass('active');
+            // 添加当前 active
+            $('#' + activeID).addClass('active');
+            
+        
+            console.log(parseInt(min) == 0);
+            // 价格区间部分
+            if (!(parseInt(min) == 0 && parseInt(max) == 999999)){
+                $('#priceMinInput').val(min);
+                $('#priceMaxInput').val(max);
+            } else{
+                $('#priceMinInput').val("");
+                $('#priceMaxInput').val("");
+            } 
+        }
+        // reloadCardAjax('/search=null-sort=date_down-min=0-max=999999');
+        
+        window.reloadCard();
+        window.initItemNav();
+        
+
+
+    })
+
+    
+</script>

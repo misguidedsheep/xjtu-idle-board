@@ -2,7 +2,7 @@
     <head>
         <%- include ('public/head') %>
     </head>
-    <body onload="initItemNav()">
+    <body>
         <%- include ('public/topNav') %><!-- 顶部导航栏 -->
         <%- include ('especial/index/header') %><!-- 头图 -->
         <!-- container -->
@@ -10,12 +10,13 @@
             <%- include ('especial/index/bulletin') %><!-- 公告栏 -->
             <%- include ('especial/index/itemNav') %><!-- 商品导航栏 -->
             <%- include ('especial/index/modal') %>
-            <div class="card-columns">
-                <%- cardSet %>
+            <div class="card-columns" id="cardAreas">
+                
             </div>
         </div><!-- container结束 -->
         <%- include ('public/foot') %>
         <%- include ('public/bootstrapCore') %>
         <%- include ('public/display') %>
+        <%- include ('especial/index/script') %>
     </body>
 </html>
