@@ -2,6 +2,7 @@ let express = require('express');
 let router = express.Router();
 const database = require('../database');
 
+
 /* GET home page. */
 router.use(function(req, res, next) {
     console.log('be about to get itemInfo')

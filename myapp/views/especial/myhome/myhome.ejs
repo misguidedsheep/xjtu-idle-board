@@ -1,0 +1,103 @@
+
+
+
+
+<form action="" method="post">
+    <div class="row">
+        
+        <div class="col-md-8 jumbotron" style="background-color:rgb(250, 250, 250);">
+            <h2>用户信息</h2>
+            <div class="row col-md-12" >
+                
+                <div class="form-group col-md">
+                    <label for="userName">用户名</label>
+                    <input type="text" name="userName" class="form-control" placeholder="未加载" id="userName" readonly>
+                    <small id="userNameHelper" class="form-text text-muted">不可修改</small>
+                </div>
+            
+                <div class="form-group col-md">
+                    <label for="netID">NetID</label>
+                    <input type="text" name="netID" class="form-control" placeholder="未加载" id="netID" readonly>
+                    <small id="userNameHelper" class="form-text text-muted">不可修改</small>
+                </div>
+            </div>
+            
+            <div class="form-group col-sm-12">
+                <label for="userDescription">签名</label>
+                <input type="text" name="userDescription" class="form-control editable" placeholder="对自己的补充描述" id="userDescription" readonly>
+                <small id="userDescriptionHelper" class="form-text text-muted">100字以内</small>
+                <div class="invalid-feedback">
+                    字符长度超出限制
+                </div>
+            </div>
+            <hr>
+            <h5>联系方式</h5>
+            <div class="row col-sm-12">
+                <div class="form-group col-sm-6">
+                    <label for="userQQ">QQ(推荐)</label>
+                    <input type="text" name="userQQ" class="form-control editable" placeholder="QQ号" id="userQQ" readonly>
+                    <div class="invalid-feedback">  
+                        字符长度超出限制
+                    </div>
+                </div>
+    
+                <div class="form-group col-sm-6">
+                    <label for="userWeChat">微信</label>
+                    <input type="text" name="userWeChat" class="form-control editable" placeholder="微信号" id="userWeChat" readonly>
+                </div>
+            </div>
+            <div id="viewModeButtons" class="col-md-8 justify-content-sm-end" style="margin-top: 1rem;">
+                <button id="enableEditing" class="btn btn-primary" type="button" name="enableEditing" value="enableEditing">启用编辑</button>
+            </div>
+
+            <div id="editModeButtons" class="col-md-8 justify-content-sm-end" style="margin-top: 1rem; display: none;">
+                <button id="applyEdition" class="btn btn-success" type="button" name="applyEdition" value="applyEdition">应用</button>
+                <button id="cancelEdition" class="btn btn-outline-secondary"   type="button" name="cancelEdition" value="cancelEdition">取消</button>
+            </div>
+        </div>
+
+        <div class="col-md-3 jumbotron" style="background-color:rgb(245, 245, 245)  ">
+            <h2>内容管理</h2>
+            
+            <div class="form-group col-md-12">
+                <label for="itemNameSelect">商品名称</label>
+                <select class="form-control col-md-12" id="itemNameSelect">               
+                </select>
+
+                <img id="itemCoverSelect" src="images/iphonese.jpg" alt="" class="col-sm-12 img-thumbnail" style="margin-top: 1rem;">
+            </div>
+            <div class="col-md-12 btn-group btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-outline-primary" id="buttonOptionOnSale">
+                    <input type="radio" name="options"  autocomplete="off"> 在售
+                </label>
+                <label class="btn btn-outline-secondary" id="buttonOptionSold">
+                    <input type="radio" name="options"  autocomplete="off"> 已售/下架
+                </label>
+                <label class="btn btn-outline-danger" id="buttonOptionDelete">
+                    <input type="radio" name="options" autocomplete="off"> 移除
+                </label>            
+            </div>
+            <div id="deleteWarning" class="alert alert-danger alert-dismissible" role="alert" style="margin-top: 1rem; display: none;">
+                <strong>请留心您的操作!</strong>
+                <p>移除操作将会不可逆地删除商品的所有信息!</p>
+            </div>
+            
+            <div class="col-md-8" style="margin-top: 1rem;">
+                <button id="changeOnSale" class="btn btn-primary" type="button" name="changeOnSale" value="changeOnSale">应用更改</button>
+            </div>
+            
+        </div>
+            
+
+        <!-- <div class="col-md-4">
+            <img src="images/north.jpg"
+                style="background-image:url(./images/north.jpg)" class="img-thumbnail" >
+            <button id="btn_uploadPic" class="btn btn-outline-primary col-sm-12 mt-3" type="submit" name="upvote" value="upvote" formmethod="POST">上传封面图片</button>
+        </div> -->
+    </div>
+
+    
+    
+    
+</form>
+

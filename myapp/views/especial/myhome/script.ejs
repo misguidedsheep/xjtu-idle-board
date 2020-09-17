@@ -1,0 +1,196 @@
+<script>
+    token = window.localStorage.getItem('xjtu-idle-token');
+    var userDescription;
+    var userQQ;
+    var userWeChat;
+    var itemSet;
+    if(token){
+        $.ajax({
+            type: 'GET',
+            url: '/getUserInfo',
+            headers:{'Authorization': `Bearer ${token}`},
+            success: function(res){
+                    if(res == 'ERROR'){
+                        console.log("getUserInfo Error: /views/especial/script.ejs)")
+                        alert("获取用户信息失败, 请检查登录状态/联系管理员")
+                    }else{
+                        console.log("getUserInfo GET RESPONSE: /views/especial/script.ejs")
+                        // topNav
+                        $("#topNav_user").html(res.userName);
+                        $("#topNav_user").attr('href', '/myhome');
+                        //userName
+                        $("#userName").val(res.userName)
+                        $("#netID").val(res.netID)
+                        $("#userDescription").val(res.userDescription)
+                        $("#userQQ").val(res.userQQ)
+                        $("#userWeChat").val(res.userWeChat)
+
+                        userDescription = res.userDescription;
+                        userQQ = res.userQQ;
+                        userWeChat = res.userWeChat;
+
+                    }
+            }   
+        })
+        
+        $.ajax({
+            type: 'GET',
+            url: '/getUserItemInfo',
+            headers:{'Authorization': `Bearer ${token}`},
+            success: (res) => {
+                if(res == 'ERROR'){
+                    console.log("getUserItemInfo Error: /views/especial/script.ejs)")
+                    alert("获取物品信息失败, 请检查登录状态/联系管理员")
+                }else{
+                    console.log("getUserItemInfo GET RESPONSE: /views/especial/script.ejs")
+                    if(res.length!=0){
+                        itemSet = res;
+                        itemSet.forEach(item => {
+                            console.log("Append 1!")
+                            console.log(item)
+                            $("#itemNameSelect").append(`<option item-id="${item.ItemID}">${item.ItemName}</option>`)
+                        });
+                    }
+                    itemSet.forEach(item => {
+                        if(item.ItemName == $("#itemNameSelect").children('option:selected').val()){
+                            $("#itemCoverSelect").attr('src', `upload/${item.CoverFileName}`)
+                            if(item.OnSale){
+                                $("#buttonOptionOnSale").addClass("active");
+                                $("#buttonOptionSold").removeClass("active");
+                            }else{
+                                $("#buttonOptionSold").addClass("active");
+                                $("#buttonOptionOnSale").removeClass("active");
+                            }   
+                            
+                        }
+                    });
+                }
+            }
+        })
+    }
+    
+    $("#enableEditing").click(() =>{
+        // 按钮(组)显示与隐藏
+        $("#viewModeButtons").css("display", "none");
+        $("#editModeButtons").css("display", "");
+        // 激活输入框
+        let toEdit = $(".editable")
+        toEdit.removeAttr("readonly")
+        // 如果未设置则清空默认值
+        if($("#userDescription").val() == "NotSet") $("#userDescription").val("");
+        if($("#userQQ").val() == "NotSet") $("#userQQ").val("");
+        if($("#userWeChat").val() == "NotSet") $("#userWeChat").val("");
+        // console.log(toEdit.val())
+        // toEdit.forEach(element => {
+        //     console.log(element.val());
+        // });
+    })
+
+    $("#applyEdition").click(() =>{
+        
+        $.ajax({
+            type: "GET",
+            url: '/modifyUserInfo',
+            headers:{'Authorization': `Bearer ${token}`},
+            data: {
+                'userDescription': $("#userDescription").val(),
+                'userQQ': $("#userQQ").val(),
+                'userWeChat': $("#userWeChat").val()
+            },
+            success: (res) =>{
+                if(res == 'ERROR'){
+                    alert("提交失败, 请重试!")
+                    // 刷新页面
+                    location.reload();
+                    return;
+                }else{
+                    console.log(res);
+                }
+            }
+
+        })
+        // 恢复只读
+        $(".editable").attr("readonly", 'true')
+        // 按钮(组)显示与隐藏
+        $("#viewModeButtons").css("display", "");
+        $("#editModeButtons").css("display", "none");
+
+    })
+
+    $("#cancelEdition").click(() => {
+        // 恢复信息
+        // console.log(userDescription, userQQ, userWeChat)
+        $("#userDescription").val(userDescription)
+        $("#userQQ").val(userQQ)
+        $("#userWeChat").val(userWeChat)
+        // 恢复只读
+        $(".editable").attr("readonly", "true")
+        // 按钮(组)显示与隐藏
+        $("#viewModeButtons").css("display", "");
+        $("#editModeButtons").css("display", "none");
+    })
+
+    $("#changeOnSale").click(() => {
+
+
+        itemID = $("#itemNameSelect").children('option:selected').attr("item-id");
+        var onSale = true;
+        var toDelete = false;
+        
+        if ($("#buttonOptionOnSale").hasClass("active")) onSale = true;
+        if ($("#buttonOptionSold").hasClass("active")) onSale = false;
+        if ($("#buttonOptionDelete").hasClass("active")) toDelete = true;
+
+        $.ajax({
+            type: "GET",
+            url: '/changeItemStatus',
+            headers:{'Authorization': `Bearer ${token}`},
+            data: {
+                'itemID': itemID,
+                'onSale': onSale,
+                'toDelete': toDelete
+            },
+            success: function(res){
+                console.log('get response from /changeItemStatus')
+                console.log(res)
+                if(!res.toString().startsWith('ERROR')){
+                    alert('更改成功');
+                }
+            }
+
+        })
+    })
+
+    
+    $("#itemNameSelect").change(function(){
+        console.log($("#itemNameSelect").children('option:selected').val())
+        console.log($("#itemNameSelect").children('option:selected').attr("item-id"))
+        itemSet.forEach(item => {
+            if(item.ItemID == $("#itemNameSelect").children('option:selected').attr("item-id")){
+                $("#itemCoverSelect").attr('src', `upload/${item.CoverFileName}`)
+                if(item.OnSale){
+                    $("#buttonOptionOnSale").addClass("active");
+                    $("#buttonOptionSold").removeClass("active");
+                    $("#buttonOptionDelete").removeClass("active");
+                }else{
+                    $("#buttonOptionSold").addClass("active");
+                    $("#buttonOptionOnSale").removeClass("active");
+                    $("#buttonOptionDelete").removeClass("active");
+                }
+            }
+            
+        });
+
+    })
+
+    $("#buttonOptionDelete").focusin( () => {
+        console.log('focus')
+        $("#deleteWarning").css("display", "");
+    })
+
+
+    $("#buttonOptionDelete").focusout( () => {
+        console.log('focusout')
+        $("#deleteWarning").css("display", "none");
+    })
+</script>

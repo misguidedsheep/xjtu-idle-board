@@ -1,23 +1,26 @@
 <script>
-    $(function(){
-        token = window.localStorage.getItem('xjtu-idle-token');
-        if(token){
-            $.ajax({
-                type: 'GET',
-                url: '/getUserName',
-                headers:{'Authorization': `Bearer ${token}`},
-                success: function(res){
-                    
-                        if(res == 'ERROR'){
-                            console.log("Token Verify Error (/views/public/display.ejs)")
-                        }else{
-                            $("#topNav_user").html(res);
-                            $("#topNav_user").attr('href', '/myhome');
-                        }
-                    
-                }   
-            })
-        }
+    var gCurrentUserName = ''
+    token = window.localStorage.getItem('xjtu-idle-token');
+    if(token){
+        $.ajax({
+            type: 'GET',
+            url: '/getUserName',
+            headers:{'Authorization': `Bearer ${token}`},
+            success: function(res){
+                    if(res == 'ERROR'){
+                        console.log("Check2: ", gCurrentUserName)
+                        gCurrentUserName = 'NULL'
+                        console.log("Token Verify Error (/views/public/display.ejs)")
+                    }else{
+                        console.log("Check2: ", gCurrentUserName)
+                        gCurrentUserName = res
+                        console.log("Check3: ", gCurrentUserName)
+                        $("#topNav_user").html(res);
+                        $("#topNav_user").attr('href', '/myhome');
+                    }
+            }   
+        })
+    }
         
-    })
+
 </script>

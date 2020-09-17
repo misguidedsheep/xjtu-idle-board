@@ -11,9 +11,14 @@ var submitRouter = require('./routes/submit')
 var toSubmitRouter = require('./routes/tosubmit')
 var loginRouter = require('./routes/login')
 var tologinRouter = require('./routes/tologin')
+var myhomeRouter = require('./routes/myhome')
 var getUserNameRouter = require('./routes/getUserName');
 var saveimgRouter = require('./routes/saveimg');
-var getItemInfoRouter = require('./routes/getItemInfo')
+var getItemInfoRouter = require('./routes/getItemInfo');
+var getUserInfoRouter = require('./routes/getUserInfo');
+var getUserItemInfoRouter = require('./routes/getUserItemInfo');
+var modifyUserInfoRouter = require('./routes/modifyUserInfo');
+var changeItemStatusRouter = require('./routes/changeItemStatus');
 var database = require('./database');
 
 var multer = require('multer');
@@ -66,6 +71,10 @@ app.post('/submit', toSubmitRouter);
 app.get('/login', loginRouter);
 app.post('/login', tologinRouter);
 
+// 用户界面
+app.get('/myhome', myhomeRouter);
+
+
 // ajax获取用户名
 app.get('/getUserName', getUserNameRouter);
 
@@ -74,6 +83,20 @@ app.post('/saveimg', upload.single('file') , saveimgRouter);
 
 // 获取商品信息
 app.get('/getItemInfo', getItemInfoRouter);
+
+// 获取用户信息
+app.get('/getUserInfo', getUserInfoRouter);
+
+// 获取用户发布的商品信息
+app.get('/getUserItemInfo', getUserItemInfoRouter)
+
+// 修改用户信息
+app.get('/modifyUserInfo', modifyUserInfoRouter);
+
+// 修改商品状态
+app.get('/changeItemStatus', changeItemStatusRouter);
+
+
 
 // app.use(expressJwt({
 //   secret: 'ReinaSecretKey',
