@@ -12,8 +12,8 @@ var transporter = nodemailer.createTransport({
     secure: true,
     // 我们需要登录到网页邮箱中，然后配置SMTP和POP3服务器的密码
     auth: {
-        user: '929755067@qq.com',
-        pass: 'psvxaszgozofbdaj'
+        user: constant.emailHost,
+        pass: constant.emailSMTPSecret
     }
 });
 
