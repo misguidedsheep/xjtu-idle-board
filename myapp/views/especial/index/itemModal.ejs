@@ -24,15 +24,21 @@
             <hr>
             <h5>简介</h5>
             <p id="itemModalDescription"></p>
-            <hr>
             <h5>新旧描述</h5>
             <p id="itemModalOldNewRate"></p>
-
             <small id="itemModalRemarks"></small>
+            <hr>
+            <h5>联系方式</h5>
+            <p id="itemModalUserQQ" style="margin: 0.5rem; margin-left: 0;">QQ</p>
+            <p id="itemModalUserWeChat" style="margin: 0.5rem; margin-left: 0;">微信</p>
+
+            
 
 
         </div>
         <div class="modal-footer">
+            <a  id="launchQQ" type="button" href="" class="btn btn-primary" target="_blank" style="display: none;">发起QQ会话</a>
+            <button id="copyWechatID" type="button" class="btn btn-success copy" data-clipboard-text='' style="display: none;" >复制微信号</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
         </div>
         </div>
@@ -57,7 +63,43 @@
                 $("#itemModalDescription").html(itemJson.itemDescription);
                 $("#itemModalOldNewRate").html(itemJson.itemOldNewRate);
                 $("#itemModalRemarks").html("备注：" + itemJson.remarks);
+                $.ajax({
+                    type: 'GET',
+                    url: '/getItemUserInfo',
+                    headers:{'Authorization': `Bearer ${token}`},
+                    data: {'userName': itemJson.itemUserName},
+                    success: (res) =>{
+                        if(res.toString().startsWith('ERROR')){
+                            console.log("可能未登录, 无法获取卖家信息")
+                            console.error(res);
+                        }else{
+                            console.log("Parsing response from /getItemUserInfo")
+                            let user = res;
+                            let userQQ = user.UserQQ;
+                            let userWeChat = user.UserWeChat;
+                            // 检测QQ是否存在,并显示
+                            if(userQQ != "" && userQQ != "NotSet"){
+                                // 修改链接
+                                $("#launchQQ").attr("href", `http://wpa.qq.com/msgrd?v=3&uin=${userQQ}&site=qq&menu=yes`)
+                                // 取消隐藏
+                                $("#launchQQ").css("display", "")
+                                $("#itemModalUserQQ").html(`QQ: ${userQQ}`);
+                            }
+                            if(userWeChat != "" && userWeChat != "NotSet"){
+                                // 修改剪切板插件属性                                    
+                                $("#copyWechatID").attr("data-clipboard-text", userWeChat)
+                                // 取消隐藏
+                                $("#copyWechatID").css("display", "")
+                                $("#itemModalUserWeChat").html(`微信: ${userWeChat}`);
 
+
+                            }
+
+                        
+                            
+                        }
+                    }
+                })
             }
         })
     }

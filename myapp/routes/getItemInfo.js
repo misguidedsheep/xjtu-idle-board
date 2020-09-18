@@ -20,6 +20,7 @@ router.use(function(req, res, next) {
                     coverFileName : item.CoverFileName,
                     itemName : item.ItemName,
                     itemPrice : item.ItemPrice,
+                    itemUserName: item.UserName,
                     itemDescription: item.ItemDescription,
                     itemOldNewRate: item.ItemOldNewRate,
                     deliverByPost: item.DeliverByPost? true : false,

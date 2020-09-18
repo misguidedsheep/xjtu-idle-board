@@ -17,6 +17,7 @@ var saveimgRouter = require('./routes/saveimg');
 var getItemInfoRouter = require('./routes/getItemInfo');
 var getUserInfoRouter = require('./routes/getUserInfo');
 var getUserItemInfoRouter = require('./routes/getUserItemInfo');
+var getItemUserInfoRouter = require('./routes/getItemUserInfo');
 var modifyUserInfoRouter = require('./routes/modifyUserInfo');
 var changeItemStatusRouter = require('./routes/changeItemStatus');
 var database = require('./database');
@@ -88,7 +89,10 @@ app.get('/getItemInfo', getItemInfoRouter);
 app.get('/getUserInfo', getUserInfoRouter);
 
 // 获取用户发布的商品信息
-app.get('/getUserItemInfo', getUserItemInfoRouter)
+app.get('/getUserItemInfo', getUserItemInfoRouter);
+
+// 获取商品对应用户的信息
+app.get('/getItemUserInfo', getItemUserInfoRouter);
 
 // 修改用户信息
 app.get('/modifyUserInfo', modifyUserInfoRouter);
