@@ -20,6 +20,9 @@ var getUserItemInfoRouter = require('./routes/getUserItemInfo');
 var getItemUserInfoRouter = require('./routes/getItemUserInfo');
 var modifyUserInfoRouter = require('./routes/modifyUserInfo');
 var changeItemStatusRouter = require('./routes/changeItemStatus');
+var registerRouter = require("./routes/register");
+var toRegisterRouter = require("./routes/toRegister")
+var registerVerifyRouter = require("./routes/registerVerify");
 var database = require('./database');
 
 var multer = require('multer');
@@ -71,6 +74,13 @@ app.post('/submit', toSubmitRouter);
 // 登录界面
 app.get('/login', loginRouter);
 app.post('/login', tologinRouter);
+
+// 注册界面
+app.get('/register', registerRouter);
+app.post('/register', toRegisterRouter);
+
+// 注册验证
+app.get('/verify', registerVerifyRouter);
 
 // 用户界面
 app.get('/myhome', myhomeRouter);

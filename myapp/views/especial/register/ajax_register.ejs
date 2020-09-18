@@ -1,0 +1,80 @@
+<script>
+    //用户名正则，4到16位（字母，数字，下划线，减号）
+    $("#netID").keyup(()=>{
+        console.log();
+    })
+
+    $("#toRegister").click(()=>{
+        
+        // 表单数据获取
+        var netID = $("#netID").val();
+        var userName = $("#userName").val();
+        var key = $("#key").val();
+        
+        // ↓---表单验证---↓
+
+        // 用户名正则，4-16个字（字母，数字，下划线，减号）
+        var userNamePattern = /^[a-zA-Z0-9_-]{4,16}$/;
+        if(userNamePattern.test(userName) == false){
+            $("#userName").addClass("is-invalid");
+        }else{
+            $("#userName").removeClass("is-invalid");
+        }
+        
+        // NetID正则，包含数字和大小写字母，但位数不确定
+        var netIDPattern = /^[a-zA-Z0-9]{4,16}$/;
+        if(netIDPattern.test(netID) == false){
+            $("#netID").addClass("is-invalid");
+        }else{
+            $("#netID").removeClass("is-invalid");
+        }
+
+        // 密码强度正则，最少6位最多20位，包括至少1个大写/小写字母，1个数字
+        var keyPattern = /^.*(?=.{6,20})(?=.*\d)(?=.*[a-zA-Z]).*$/;
+        if(keyPattern.test(key) == false){
+            $("#key").addClass("is-invalid");
+        }else{
+            $("#key").removeClass("is-invalid");
+        }
+
+        if($("input").hasClass('is-invalid')){
+            console.log("Invalid input detected.")
+            return;
+        }
+
+        // ↑---表单验证---↑
+        
+        // 提交表单
+        $.ajax({
+            type: 'POST',
+            url: '/register',
+            data:{'netID': netID, 'userName': userName, 'key': key},
+            success: (res) => {
+                if(res.toString() == "OK"){
+                    //发送邮件成功
+                    $("#successMessage").removeClass("fade")
+                    $("#toRegister").attr("disabled", 'true');
+                }else{
+                    // 错误处理
+                    console.log(res);
+                    if(res.toString().startsWith('ERROR')){
+                        var errorCode = res.toString().replace("ERROR: ", '').replace(" (Router: toRegister)", "");
+                        var errorReminder = '';
+                        switch(errorCode){
+                            case 'SQL_QUERY_ERROR': errorReminder = '数据库查询错误'; break;
+                            case 'USER_EXISTS_ERROR': errorReminder = '用户名/NetID已经存在, 无法重复注册'; break;
+                            case 'MAIL_SEND_ERROR': errorReminder = '发送邮件时遇到错误'; break;
+                            default: errorReminder = '未知错误'
+                        }
+                        alert(errorReminder);
+                    }else{
+                        alert("未知答复")
+                    }
+                    
+                }
+            }
+        })
+
+    })
+    
+</script>   
