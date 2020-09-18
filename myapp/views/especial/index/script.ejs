@@ -1,4 +1,4 @@
-<script src="https://cdn.bootcdn.net/ajax/libs/clipboard.js/2.0.6/clipboard.js"></script>
+
 
 <script>
     // 渲染itemNav & topNav
@@ -166,4 +166,25 @@
     })
 
     
+</script>
+
+
+<script>
+  var clipboard = new ClipboardJS('#copyWechatID', {
+    // 这里必须用原生JS!!
+    // 这是一个坑, 如果在Bootstrap的Modal中使用clipboard.js, 会因为焦点问题而失效
+    // 下面这行就是解决方法
+    container: document.getElementById("itemModal")
+  });
+  clipboard.on('success', function(e) {
+    console.info('Action:', e.action);
+    console.info('Text:', e.text);
+    console.info('Trigger:', e.trigger);
+
+  });
+  
+  clipboard.on('error', function(e) {
+      console.error('Action:', e.action);
+      console.error('Trigger:', e.trigger);
+  });
 </script>

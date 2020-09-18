@@ -29,16 +29,20 @@
             <small id="itemModalRemarks"></small>
             <hr>
             <h5>联系方式</h5>
-            <p id="itemModalUserQQ" style="margin: 0.5rem; margin-left: 0;">QQ</p>
-            <p id="itemModalUserWeChat" style="margin: 0.5rem; margin-left: 0;">微信</p>
+            <div>
+                <p id="unloginReminder"><a href="/login">登录</a>后方可获取卖家联系方式</p>
+                <p id="itemModalUserQQ" style="margin: 0.5rem; margin-left: 0; display: none;">QQ</p>
+                <p id="itemModalUserWeChat" style="margin: 0.5rem; margin-left: 0; display: none;">微信</p>
+            </div>
+            
 
             
 
 
         </div>
         <div class="modal-footer">
-            <a  id="launchQQ" type="button" href="" class="btn btn-primary" target="_blank" style="display: none;">发起QQ会话</a>
-            <button id="copyWechatID" type="button" class="btn btn-success copy" data-clipboard-text='' style="display: none;" >复制微信号</button>
+            <a  id="launchQQ" type="button" href="" class="btn btn-primary" target="_blank" sntyle="display: none;">发起QQ会话</a>
+            <div id="copyWeChatID" class="btn btn-success" data-clipboard-text='' style="display: none;" >复制微信号</div>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
         </div>
         </div>
@@ -78,19 +82,32 @@
                             let userQQ = user.UserQQ;
                             let userWeChat = user.UserWeChat;
                             // 检测QQ是否存在,并显示
+                            
+                            // 隐藏未登录提示
+                            $("#unloginReminder").css("display", "none")
+
                             if(userQQ != "" && userQQ != "NotSet"){
                                 // 修改链接
                                 $("#launchQQ").attr("href", `http://wpa.qq.com/msgrd?v=3&uin=${userQQ}&site=qq&menu=yes`)
                                 // 取消隐藏
                                 $("#launchQQ").css("display", "")
+                                // 修改文本
                                 $("#itemModalUserQQ").html(`QQ: ${userQQ}`);
+                                // 取消隐藏
+                                $("#itemModalUserQQ").css("display", "");
+
                             }
                             if(userWeChat != "" && userWeChat != "NotSet"){
+                                console.log("get WeChat and about to display")
                                 // 修改剪切板插件属性                                    
-                                $("#copyWechatID").attr("data-clipboard-text", userWeChat)
+                                $("#copyWeChatID").attr("data-clipboard-text", `${userWeChat}`)
                                 // 取消隐藏
-                                $("#copyWechatID").css("display", "")
+                                $("#copyWeChatID").css("display", "")
+                                //  修改文本
                                 $("#itemModalUserWeChat").html(`微信: ${userWeChat}`);
+                                // 取消隐藏
+                                $("#itemModalUserWeChat").css("display", "");
+
 
 
                             }
