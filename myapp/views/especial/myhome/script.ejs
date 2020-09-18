@@ -154,6 +154,14 @@
                 console.log('get response from /changeItemStatus')
                 console.log(res)
                 if(!res.toString().startsWith('ERROR')){
+                    console.log('changeItemStatus:', res)
+                    itemSet.forEach(item => {
+                        if(item.ItemID == itemID){
+                            console.log('item', item)
+                            item.OnSale = onSale;
+                            
+                        }
+                    });
                     alert('更改成功');
                 }
             }

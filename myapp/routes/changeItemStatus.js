@@ -24,7 +24,7 @@ router.use(function(req, res, next) {
             if(req.query.onSale == 'true') isOnSale = 'true'; else isOnSale = 'false';
             let itemID = req.query.itemID;
             
-
+            console.log('isOnSale', isOnSale)
             sql = `UPDATE Items set OnSale=${isOnSale} WHERE ItemID='${itemID}'`
             if(req.query.toDelete == 'true'){
                 sql = `DELETE FROM Items WHERE ItemID='${itemID}'`
