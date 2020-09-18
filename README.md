@@ -31,3 +31,7 @@ node_modules不上传, 可使用`npm install`补全模块
 ### 用户页示例
 
 ![用户页示例](https://s1.ax1x.com/2020/09/18/wfyfQs.png)
+
+### 注册示例
+
+![注册示例](https://s1.ax1x.com/2020/09/19/w5CQCq.png)
