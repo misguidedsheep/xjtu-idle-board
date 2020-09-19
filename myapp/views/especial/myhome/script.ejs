@@ -66,7 +66,6 @@
                 $("#buttonOptionSold").addClass("active");
                 $("#buttonOptionOnSale").removeClass("active");
               }
-              break;
             }
           });
         }
@@ -160,7 +159,6 @@
             // 修改本地储存的状态
             if (item.ItemID == itemID) {
               item.OnSale = onSale;
-              break;
             }
             // 如果进行了删除操作就重新加载
             if (toDelete) {
