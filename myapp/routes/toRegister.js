@@ -5,14 +5,13 @@ var constant = require('../private/constant');
 const nodemailer = require("nodemailer");
 const database = require('../database');
 
-// 定义邮件服务器服，建议使用QQ邮箱，用Yeah(网易)邮箱配置出现各种问题
+// 定义邮件服务器
 var transporter = nodemailer.createTransport({
-	host: 'smtp.qq.com',
-	service: 'qq',
+	host: constant.emailHost,
+	service: constant.emailService,
 	secure: true,
-	// 我们需要登录到网页邮箱中，然后配置SMTP和POP3服务器的密码
 	auth: {
-		user: constant.emailHost,
+		user: constant.emailUser,
 		pass: constant.emailSMTPSecret
 	}
 });
@@ -66,9 +65,9 @@ router.use(function (req, res, next) {
 
 				var mailOptions = {
 					// 发送邮件的地址
-					from: '929755067@qq.com', // login user must equal to this user
+					from: 'reinaxxxxa@163.com', 
 					// 接收邮件的地址
-					to: `${netID}@stu.xjtu.edu.cn`,  // xrj0830@gmail.com
+					to: `${netID}@stu.xjtu.edu.cn`,
 					// 邮件主题
 					subject: '闲置公告板注册验证',
 					// 以HTML的格式显示，这样可以显示图片、链接、字体颜色等信息

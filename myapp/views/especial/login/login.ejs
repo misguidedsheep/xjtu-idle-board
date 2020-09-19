@@ -1,34 +1,40 @@
-<div class="container">
-    <div id="login">
-        <div class="col-md-4 m-auto">
-            <h3 style="margin: auto;">Login</h3> 
-        </div>
-        <br>
-        <form action="" method="POST">
-            <div class="form-group col-md-4 m-auto">
-                <label for="itemDesc">ID</label>
-                <input type="text" name="userID" class="form-control" placeholder="请输入ID" id="userID" required>
+
+        <form id="login" class="form-signin" style="max-width: 300px; margin:auto;">
+            <div class="text-center mb-4">
+                <div class="mr-auto ml-auto">
+                    <h3 style=" display: inline;">登录至公告板</h3>
+                </div>
+                
+            </div>
+        
+            <div class="text-center mb-4">
+                <p>请使用NetID与密码作为凭证</p>
+            </div>
+
+            <div class="form-group m-auto">
+                <input type="text" name="userID" class="form-control" placeholder="NetID" id="userID" required autofocus>
                 <div class="invalid-feedback">
                     输入内容不能为空
                 </div>
             </div>
-            <br>
-            <div class="form-group col-md-4 m-auto">
-                <label for="oldNewRate">密码</label>
-                <input type="text" name="key" class="form-control" id="key" placeholder="请输入密码" required>
+
+            <div class="form-group m-auto">
+                <input type="password" name="key" class="form-control" id="key" placeholder="密码" required>
                 <div class="invalid-feedback">
                     输入内容不能为空
                 </div>
             </div>
-            <br>
-            <br>
-            <div class="col-md-4 m-auto justify-content-sm-end">
-                <button class="btn btn-primary col-sm-4" type="button" name="upvote" value="upvote" formmethod="POST">登录</button>
-                <a class="btn btn-outline-info col-sm-2" href="/register" style="margin-left: 1rem;" type="button">注册</a>
+            <div class="checkbox mb-3">
+                <label style="margin-bottom: 0.2rem; margin-top: 0.22rem;">
+                    <input type="checkbox" name="tenDaysOff" id="tenDaysOff">
+                    10天免登录
+                </label>
             </div>
+
+            <button class="btn  btn-primary btn-block" type="button">登录</button>
+            <a class="btn btn-outline-info col-sm-12 mt-4" href="/register" type="button">注册</a>
+                
         </form>
-    </div>
+
         
         
-        
-</div>

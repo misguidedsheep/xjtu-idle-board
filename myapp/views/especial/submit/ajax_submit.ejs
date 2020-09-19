@@ -40,7 +40,7 @@
                         if($("#itemName").val().length > 36) $("#itemName").addClass("is-invalid");
                         // 商品价格
                         var price = Number($("#itemPrice").val())
-                        if(isNaN(price) || parseInt(price) < 1) $("#itemPrice").addClass("is-invalid");
+                        if(isNaN(price) || parseInt(price) < 0) $("#itemPrice").addClass("is-invalid");
                         // 商品简介
                         if($("#itemDescription").val().length > 200) $("#itemDescription").addClass("is-invalid");
                         // 新旧程度描述

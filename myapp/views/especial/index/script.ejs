@@ -31,20 +31,31 @@
 
   $(window).scroll(function () {
     // 滚轮监听
-    var itemNavOffset = $("#itemNavPositioner").offset().top;
+   
     var scrollPosition = $(this).scrollTop();
+    var itemNavHeight = $("#itemNav").height();
     // 根据两个位置大小关系, 确定导航栏的显示方式
-    if (
-      scrollPosition > itemNavOffset &&
-      !$("#itemNav").hasClass("fixed-top")
-    ) {
-      $("#topNav").css("display", "none");
-      $("#itemNav").addClass("fixed-top");
+
+    // 如果itemNav没有置顶
+    if (!$("#itemNav").hasClass("fixed-top")){
+      var itemNavHeight = $("#itemNav").height();
+      var itemNavOffset = $("#itemNav").offset().top;
+      if(scrollPosition >= itemNavOffset - 10){
+        $("#topNav").css("display", "none");
+        $("#itemNav").addClass("fixed-top");
+        $("#itemNavPositioner").height(itemNavHeight);
+      }
+    }else{
+      // 如果itemNav置顶
+      var itemNavHeight = $("#itemNavPositioner").height();
+      var itemNavOffset = $("#itemNavPositioner").offset().top;
+      if(scrollPosition <= itemNavOffset - 10){
+        $("#topNav").css("display", "");
+        $("#itemNav").removeClass("fixed-top");
+        $("#itemNavPositioner").height('0');
+      }
     }
-    if (scrollPosition < itemNavOffset && $("#itemNav").hasClass("fixed-top")) {
-      $("#topNav").css("display", "");
-      $("#itemNav").removeClass("fixed-top");
-    }
+    
   });
 
   // 搜索事件
@@ -170,6 +181,8 @@
   $(function () {
     reloadCard();
     updateNav();
+    // 显示顶部搜索栏
+    $("#topSearch").css("display", "")
   });
 </script>
 

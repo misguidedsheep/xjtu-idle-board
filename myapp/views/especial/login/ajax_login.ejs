@@ -13,14 +13,14 @@
             url: '/login',
             data: $("form").serialize(),
             success: function(res){
-                if(res!='ERROR'){
+                if(! res.toString().startsWith('ERROR')){
                     let token = JSON.parse(res).token;
                     console.log(token);
                     window.localStorage.setItem('xjtu-idle-token', token);
                     window.alert('登录成功');
                     window.location.href = '/'
                 }else{
-                    window.alert('登录失败');
+                    window.alert('登录失败, 请检查NetID/密码');
                 }
             }
         })

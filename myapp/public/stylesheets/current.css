@@ -128,7 +128,7 @@ body {
 */
 @media (min-width: 1200px) {
   .container{
-      max-width: 1400px;
-      min-width: 500px;
+      max-width: 1200px;
+      min-width: 300px;
   }
 }
