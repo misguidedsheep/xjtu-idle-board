@@ -46,7 +46,11 @@ node_modules不上传, 可使用`npm install`补全模块
 
 ## 展示
 
-### itemModal
+### 主页示例
+
+![主页示例](https://s1.ax1x.com/2020/09/19/woeMGD.png)
+
+### itemModal示例
 
 ![itemModal展示](https://s1.ax1x.com/2020/09/16/w2mwSP.png)
 
