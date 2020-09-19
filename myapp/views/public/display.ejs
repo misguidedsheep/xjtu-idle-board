@@ -1,29 +1,29 @@
 <script>
-    var gCurrentUserName = ''
-    token = window.localStorage.getItem('xjtu-idle-token');
-    if(token){
-        $.ajax({
-            type: 'GET',
-            url: '/getUserName',
-            headers:{'Authorization': `Bearer ${token}`},
-            success: function(res){
-                    if(res == 'ERROR'){
-                        console.log("Check2: ", gCurrentUserName)
-                        gCurrentUserName = 'NULL'
-                        console.log("Token Verify Error (/views/public/display.ejs)")
-                    }else{
-                        console.log("Check2: ", gCurrentUserName)
-                        gCurrentUserName = res
-                        console.log("Check3: ", gCurrentUserName)
-                        $("#topNav_user").html(res);
-                        $("#topNav_user").attr('href', '/myhome');
-                        $("#topNav_logout").css('display', '');
-                    }
-            }   
-        })
-    }
-    $(function(){
-        $('[data-toggle="tooltip"]').tooltip()
-    })    
+  // 加载topNav上用户名的区域 (使用getUserName, 轻量)
+  var gCurrentUserName = ''
+  var token = window.localStorage.getItem('xjtu-idle-token');
+  if (token) {
+    $.ajax({
+      type: 'GET',
+      url: '/getUserName',
+      headers: { 'Authorization': `Bearer ${token}` },
+      success: function (res) {
+
+        if (res.toString().startsWith('ERROR')) {
+          // ! 错误处理
+          gCurrentUserName = 'NULL'
+          console.log(res)
+        } else {
+          gCurrentUserName = res
+          // 改变内容和链接
+          $("#topNav_user").html(res);
+          $("#topNav_user").attr('href', '/myhome');
+          // 显示登出链接
+          $("#topNav_logout").css('display', '');
+          $('[data-toggle="tooltip"]').tooltip()
+        }
+      }
+    })
+  }
 
 </script>

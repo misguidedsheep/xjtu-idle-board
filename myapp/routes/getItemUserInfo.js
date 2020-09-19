@@ -4,41 +4,50 @@ const database = require('../database');
 const jwt = require('jsonwebtoken');
 const constant = require('../private/constant')
 
-/* GET home page. */
-router.use(function(req, res, next) {
-    console.log('be about to get getItemUserInfo')
+// 获取卖家信息
+// 错误处理标准化 √√
+router.use(function (req, res, next) {
+
     // 验证token, 获取用户名
     let token = req.headers.authorization.replace("Bearer ", "");
-    console.log('getToken: ', token)
-    jwt.verify(token, constant.secretKey, function(err, decoded){
-        if(err){
-            console.log('ERROR: routes/getItemUserInfo.js')
-            res.end('ERROR');
+    jwt.verify(token, constant.secretKey, function (err, decoded) {
+        if (err) {
+            // ! JWT验证错误
+            let errMsg = 'ERROR: JWT_VERIFY_ERROR (Router: getItemUserInfo)'
+            res.send(errMsg);
+            console.log(errMsg, err);
             return;
-        }else{
-            //jwt验证成功
+        } else {
+            // % JWT验证成功, 获取要查询的用户名 (得到商品卖家的信息, 用户名不可以直接用Token中的信息)
             let userName = req.query.userName
-            sql = `SELECT * FROM Users WHERE UserName='${userName}'`
+            let sql = `SELECT * FROM Users WHERE UserName='${userName}'`
             console.log('sql', sql);
-            database.connection.query(sql, function(err, result){
-                if(err) console.error(err);
-                else{
-                    if(result.length != 0){
+            database.connection.query(sql, function (err, result) {
+                if (err) {
+                    // ! SQL查询错误
+                    let errMsg = 'ERROR: SQL_QUERY_ERROR (Router: getItemUserInfo)'
+                    res.send(errMsg);
+                    // 特例不作log
+                    // console.log(errMsg);
+                    return;
+                } else {
+                    // % SQL查询成功
+                    if (result.length != 0) {
+                        // √ 查询结果有结果, 返回SQL结果
                         user = result[0]
                         res.send(user)
                         return;
-                    }else{
-                        res.send("ERROR from getItemUserInfo.js")
+                    } else {
+                        // ! SQL查询无结果错误
+                        let errMsg = "ERROR: SQL_NO_RESULT (Router: getItemUserInfo)"
+                        res.send(errMsg);
+                        console.log(errMsg, err);
                         return;
                     }
                 }
             })
         }
     })
-
-    // 从mysql查询
-    
-
 });
 
 module.exports = router;

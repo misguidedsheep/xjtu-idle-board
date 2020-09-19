@@ -1,7 +1,7 @@
 let express = require('express');
 let router = express.Router();
 
-/* GET login page. */
+// 渲染注册页
 router.use(function(req, res, next) {
     res.render('register');
 });

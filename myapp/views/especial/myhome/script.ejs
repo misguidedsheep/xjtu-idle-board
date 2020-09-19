@@ -1,204 +1,210 @@
 <script>
-    token = window.localStorage.getItem('xjtu-idle-token');
-    var userDescription;
-    var userQQ;
-    var userWeChat;
-    var itemSet;
-    if(token){
-        $.ajax({
-            type: 'GET',
-            url: '/getUserInfo',
-            headers:{'Authorization': `Bearer ${token}`},
-            success: function(res){
-                    if(res == 'ERROR'){
-                        console.log("getUserInfo Error: /views/especial/script.ejs)")
-                        alert("获取用户信息失败, 请检查登录状态/联系管理员")
-                    }else{
-                        console.log("getUserInfo GET RESPONSE: /views/especial/script.ejs")
-                        // topNav
-                        $("#topNav_user").html(res.userName);
-                        $("#topNav_user").attr('href', '/myhome');
-                        //userName
-                        $("#userName").val(res.userName)
-                        $("#netID").val(res.netID)
-                        $("#userDescription").val(res.userDescription)
-                        $("#userQQ").val(res.userQQ)
-                        $("#userWeChat").val(res.userWeChat)
+  token = window.localStorage.getItem('xjtu-idle-token');
+  // 定义全局变量
+  var userDescription;
+  var userQQ;
+  var userWeChat;
+  var itemSet;
 
-                        userDescription = res.userDescription;
-                        userQQ = res.userQQ;
-                        userWeChat = res.userWeChat;
+  if (token) {
+    // 获取用户信息的请求 (Token √)
+    $.ajax({
+      type: 'GET',
+      url: '/getUserInfo',
+      headers: { 'Authorization': `Bearer ${token}` },
+      success: function (res) {
+        if (res.toString().startsWith('ERROR')) {
+          // ! 后端返回错误
+          console.log(res)
+          alert("获取用户信息失败, 请检查登录状态/联系管理员")
+        } else {
+          // √ 返回正确, 获得结果
+          userSQLResult = res;
+          // 顶部导航栏更新 (替代 views/public/display.ejs)
+          $("#topNav_user").html(userSQLResult.UserName);
+          $("#topNav_user").attr('href', '/myhome');
+          // 用户页信息栏更新
+          $("#userName").val(userSQLResult.UserName)
+          $("#netID").val(userSQLResult.NetID)
+          $("#userDescription").val(userSQLResult.UserDescription)
+          $("#userQQ").val(userSQLResult.UserQQ)
+          $("#userWeChat").val(userSQLResult.UserWeChat)
 
-                    }
-            }   
-        })
-        
-        $.ajax({
-            type: 'GET',
-            url: '/getUserItemInfo',
-            headers:{'Authorization': `Bearer ${token}`},
-            success: (res) => {
-                if(res == 'ERROR'){
-                    console.log("getUserItemInfo Error: /views/especial/script.ejs)")
-                    alert("获取物品信息失败, 请检查登录状态/联系管理员")
-                }else{
-                    console.log("getUserItemInfo GET RESPONSE: /views/especial/script.ejs")
-                    if(res.length!=0){
-                        itemSet = res;
-                        itemSet.forEach(item => {
-                            console.log("Append 1!")
-                            console.log(item)
-                            $("#itemNameSelect").append(`<option item-id="${item.ItemID}">${item.ItemName}</option>`)
-                        });
-                    }
-                    itemSet.forEach(item => {
-                        if(item.ItemName == $("#itemNameSelect").children('option:selected').val()){
-                            $("#itemCoverSelect").attr('src', `upload/${item.CoverFileName}`)
-                            if(item.OnSale){
-                                $("#buttonOptionOnSale").addClass("active");
-                                $("#buttonOptionSold").removeClass("active");
-                            }else{
-                                $("#buttonOptionSold").addClass("active");
-                                $("#buttonOptionOnSale").removeClass("active");
-                            }   
-                            
-                        }
-                    });
-                }
+          // 修改全局变量
+          userDescription = userSQLResult.UserDescription;
+          userQQ = userSQLResult.UserQQ;
+          userWeChat = userSQLResult.UserWeChat;
+
+        }
+      }
+    })
+
+    // 获取用户发布的商品信息的请求 (Token √)
+    $.ajax({
+      type: 'GET',
+      url: '/getUserItemInfo',
+      headers: { 'Authorization': `Bearer ${token}` },
+      success: (res) => {
+        if (res.toString().startsWith('ERROR')) {
+          // ! 后端返回错误
+          alert("获取物品信息失败, 请检查登录状态/联系管理员")
+          console.log(res)
+        } else {
+          //  本地存储一份物品信息
+          itemSet = res;
+          itemSet.forEach(item => {
+            $("#itemNameSelect").append(`<option item-id="${item.ItemID}">${item.ItemName}</option>`)
+          });
+          itemSet.forEach(item => {
+            // 根据当前物品的状态渲染相应元素
+            if (item.ItemName == $("#itemNameSelect").children('option:selected').val()) {
+              $("#itemCoverSelect").attr('src', `upload/${item.CoverFileName}`)
+              if (item.OnSale) {
+                $("#buttonOptionOnSale").addClass("active");
+                $("#buttonOptionSold").removeClass("active");
+              } else {
+                $("#buttonOptionSold").addClass("active");
+                $("#buttonOptionOnSale").removeClass("active");
+              }
+              break;
             }
-        })
-    }
-    
-    $("#enableEditing").click(() =>{
-        // 按钮(组)显示与隐藏
-        $("#viewModeButtons").css("display", "none");
-        $("#editModeButtons").css("display", "");
-        // 激活输入框
-        let toEdit = $(".editable")
-        toEdit.removeAttr("readonly")
-        // 如果未设置则清空默认值
-        if($("#userDescription").val() == "NotSet") $("#userDescription").val("");
-        if($("#userQQ").val() == "NotSet") $("#userQQ").val("");
-        if($("#userWeChat").val() == "NotSet") $("#userWeChat").val("");
-        // console.log(toEdit.val())
-        // toEdit.forEach(element => {
-        //     console.log(element.val());
-        // });
+          });
+        }
+      }
     })
+  }
 
-    $("#applyEdition").click(() =>{
-        
-        $.ajax({
-            type: "GET",
-            url: '/modifyUserInfo',
-            headers:{'Authorization': `Bearer ${token}`},
-            data: {
-                'userDescription': $("#userDescription").val(),
-                'userQQ': $("#userQQ").val(),
-                'userWeChat': $("#userWeChat").val()
-            },
-            success: (res) =>{
-                if(res == 'ERROR'){
-                    alert("提交失败, 请重试!")
-                    // 刷新页面
-                    location.reload();
-                    return;
-                }else{
-                    console.log(res);
-                }
+  // 启用编辑按钮 点击事件
+  $("#enableEditing").click(() => {
+    // 按钮(组)显示与隐藏
+    $("#viewModeButtons").css("display", "none");
+    $("#editModeButtons").css("display", "");
+    // 激活输入框
+    let toEdit = $(".editable")
+    toEdit.removeAttr("readonly")
+    // 如果未设置则清空默认值
+    if ($("#userDescription").val() == "NotSet") $("#userDescription").val("");
+    if ($("#userQQ").val() == "NotSet") $("#userQQ").val("");
+    if ($("#userWeChat").val() == "NotSet") $("#userWeChat").val("");
+  })
+
+  // 应用更改按钮 点击事件
+  $("#applyEdition").click(() => {
+    // 应用更改请求 (Token √)
+    $.ajax({
+      type: "GET",
+      url: '/modifyUserInfo',
+      headers: { 'Authorization': `Bearer ${token}` },
+      data: {
+        'userDescription': $("#userDescription").val(),
+        'userQQ': $("#userQQ").val(),
+        'userWeChat': $("#userWeChat").val()
+      },
+      success: (res) => {
+        if (res.toString().startsWith('ERROR')) {
+          alert("提交失败, 请重试!", res)
+          console.log(res);
+          // 刷新页面
+          location.reload();
+          return;
+        } else {
+          alert("更改成功")
+        }
+      }
+    })
+    // 恢复只读
+    $(".editable").attr("readonly", 'true')
+    // 按钮(组)显示与隐藏
+    $("#viewModeButtons").css("display", "");
+    $("#editModeButtons").css("display", "none");
+  })
+
+  // 取消更改按钮 点击事件
+  $("#cancelEdition").click(() => {
+    // 恢复信息
+    $("#userDescription").val(userDescription)
+    $("#userQQ").val(userQQ)
+    $("#userWeChat").val(userWeChat)
+    // 恢复只读
+    $(".editable").attr("readonly", "true")
+    // 按钮(组)显示与隐藏
+    $("#viewModeButtons").css("display", "");
+    $("#editModeButtons").css("display", "none");
+  })
+
+  // 应用修改商品状态按钮 点击事件
+  $("#changeOnSale").click(() => {
+    var itemID = $("#itemNameSelect").children('option:selected').attr("item-id");
+    var onSale = true;
+    var toDelete = false;
+
+    if ($("#buttonOptionOnSale").hasClass("active")) onSale = true;
+    if ($("#buttonOptionSold").hasClass("active")) onSale = false;
+    if ($("#buttonOptionDelete").hasClass("active")) toDelete = true;
+
+    // 更改商品状态请求 (Token √)
+    $.ajax({
+      type: "GET",
+      url: '/changeItemStatus',
+      headers: { 'Authorization': `Bearer ${token}` },
+      data: {
+        'itemID': itemID,
+        'onSale': onSale,
+        'toDelete': toDelete
+      },
+      success: function (res) {
+        if (!res.toString().startsWith('ERROR')) {
+          // 成功反馈
+          alert("更改成功")
+          itemSet.forEach(item => {
+            // 修改本地储存的状态
+            if (item.ItemID == itemID) {
+              item.OnSale = onSale;
+              break;
             }
-
-        })
-        // 恢复只读
-        $(".editable").attr("readonly", 'true')
-        // 按钮(组)显示与隐藏
-        $("#viewModeButtons").css("display", "");
-        $("#editModeButtons").css("display", "none");
-
-    })
-
-    $("#cancelEdition").click(() => {
-        // 恢复信息
-        // console.log(userDescription, userQQ, userWeChat)
-        $("#userDescription").val(userDescription)
-        $("#userQQ").val(userQQ)
-        $("#userWeChat").val(userWeChat)
-        // 恢复只读
-        $(".editable").attr("readonly", "true")
-        // 按钮(组)显示与隐藏
-        $("#viewModeButtons").css("display", "");
-        $("#editModeButtons").css("display", "none");
-    })
-
-    $("#changeOnSale").click(() => {
-
-
-        itemID = $("#itemNameSelect").children('option:selected').attr("item-id");
-        var onSale = true;
-        var toDelete = false;
-        
-        if ($("#buttonOptionOnSale").hasClass("active")) onSale = true;
-        if ($("#buttonOptionSold").hasClass("active")) onSale = false;
-        if ($("#buttonOptionDelete").hasClass("active")) toDelete = true;
-
-        $.ajax({
-            type: "GET",
-            url: '/changeItemStatus',
-            headers:{'Authorization': `Bearer ${token}`},
-            data: {
-                'itemID': itemID,
-                'onSale': onSale,
-                'toDelete': toDelete
-            },
-            success: function(res){
-                console.log('get response from /changeItemStatus')
-                console.log(res)
-                if(!res.toString().startsWith('ERROR')){
-                    console.log('changeItemStatus:', res)
-                    itemSet.forEach(item => {
-                        if(item.ItemID == itemID){
-                            console.log('item', item)
-                            item.OnSale = onSale;
-                            
-                        }
-                    });
-                    alert('更改成功');
-                }
+            // 如果进行了删除操作就重新加载
+            if (toDelete) {
+              location.reload();
             }
-
-        })
-    })
-
-    
-    $("#itemNameSelect").change(function(){
-        console.log($("#itemNameSelect").children('option:selected').val())
-        console.log($("#itemNameSelect").children('option:selected').attr("item-id"))
-        itemSet.forEach(item => {
-            if(item.ItemID == $("#itemNameSelect").children('option:selected').attr("item-id")){
-                $("#itemCoverSelect").attr('src', `upload/${item.CoverFileName}`)
-                if(item.OnSale){
-                    $("#buttonOptionOnSale").addClass("active");
-                    $("#buttonOptionSold").removeClass("active");
-                    $("#buttonOptionDelete").removeClass("active");
-                }else{
-                    $("#buttonOptionSold").addClass("active");
-                    $("#buttonOptionOnSale").removeClass("active");
-                    $("#buttonOptionDelete").removeClass("active");
-                }
-            }
-            
-        });
+          });
+        } else {
+          // ! 从后端接收到错误
+          // 失败反馈
+          alert("更改失败!", res)
+          console.log(res);
+        }
+      }
 
     })
+  })
 
-    $("#buttonOptionDelete").focusin( () => {
-        console.log('focus')
-        $("#deleteWarning").css("display", "");
-    })
+  // 商品下拉选择框 改变事件
+  $("#itemNameSelect").change(function () {
+    itemSet.forEach(item => {
+      if (item.ItemID == $("#itemNameSelect").children('option:selected').attr("item-id")) {
+        $("#itemCoverSelect").attr('src', `upload/${item.CoverFileName}`)
+        if (item.OnSale) {
+          $("#buttonOptionOnSale").addClass("active");
+          $("#buttonOptionSold").removeClass("active");
+          $("#buttonOptionDelete").removeClass("active");
+        } else {
+          $("#buttonOptionSold").addClass("active");
+          $("#buttonOptionOnSale").removeClass("active");
+          $("#buttonOptionDelete").removeClass("active");
+        }
+      }
 
+    });
 
-    $("#buttonOptionDelete").focusout( () => {
-        console.log('focusout')
-        $("#deleteWarning").css("display", "none");
-    })
+  })
+
+  // 删除选择按钮 聚焦事件
+  $("#buttonOptionDelete").focusin(() => {
+    $("#deleteWarning").css("display", "");
+  })
+
+  // 删除选择按钮 失焦事件
+  $("#buttonOptionDelete").focusout(() => {
+    $("#deleteWarning").css("display", "none");
+  })
 </script>

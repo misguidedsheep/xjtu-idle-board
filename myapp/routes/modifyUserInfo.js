@@ -4,17 +4,18 @@ const database = require('../database');
 const jwt = require('jsonwebtoken');
 const constant = require('../private/constant')
 
-/* GET home page. */
+// 修改用户信息
+// 错误处理标准化 √√
 router.use(function(req, res, next) {
-    console.log('be about to get userInfo')
-    // 验证token, 获取用户名
+    // 验证 token, 获取用户名
     let token = req.headers.authorization.replace("Bearer ", "");
     var userName;
-    console.log('getToken: ', token)
     jwt.verify(token, constant.secretKey, function(err, decoded){
         if(err){
-            console.log('Error: routes/getUserInfo.js')
-            res.end('ERROR');
+            // ! JWT验证错误
+            let errMsg = 'ERROR: JWT_VERIFY_ERROR (Router: modifyUserInfo)'
+            res.send(errMsg);
+            console.log(errMsg, err);
         }else{
             userName = decoded.userName;
         }
@@ -26,14 +27,14 @@ router.use(function(req, res, next) {
 
     // 从mysql查询
     sql = `UPDATE Users SET UserDescription='${userDescription}',UserQQ='${userQQ}',UserWeChat='${userWeChat}' WHERE UserName='${userName}'`
-    console.log('sql', sql);
     database.connection.query(sql, function(err, result){
         if(err){
-            console.error(err);
-            res.send("ERROR")
-        }
-        else{
-            console.log(result);
+            // ! SQL查询错误
+            let errMsg = "ERROR: SQL_QUERY_ERROR (Router: modifyUserInfo)";
+            res.send(errMsg);
+            console.log(errMsg, err);
+        }else{
+            // √ SQL查询成功
             res.send("OK")
         }
     })

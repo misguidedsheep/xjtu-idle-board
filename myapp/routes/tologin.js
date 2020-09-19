@@ -4,18 +4,22 @@ var jwt = require('jsonwebtoken')
 var constant = require('../private/constant')
 const database = require('../database')
 
-/* GET home page. */
+// 登录, 签发 token
+// 错误处理标准化 √√
 router.use(function(req, res, next){
     id = req.body.userID;
     key = req.body.key;
     sql = `SELECT * FROM Users WHERE (NetID='${id}' AND  UserKey='${key}') OR (UserName='${id}' AND UserKey='${key}')`;
     database.connection.query(sql, function(err, result){
         if (err){
-            console.log(err);
-            res.send("ERROR");
+            // ! SQL查询错误
+            let errMsg = "ERROR: SQL_QUERY_ERROR (Router: tologin)";
+            res.send(errMsg);
+            console.log(errMsg, err);
         }else{
-            console.log(result);
+            // % SQL查询成功
             if(result.length!=0){
+                // √ 查询结果有结果, 签发 token
                 var userID = result[0].UserID;
                 var netID = result[0].NetID;
                 var userName = result[0].UserName;
@@ -37,7 +41,10 @@ router.use(function(req, res, next){
                 });
                 res.send(resMsg)
             }else{
-                res.send("ERROR");
+                // ! SQL查询无结果错误
+                let errMsg = "ERROR: SQL_NO_RESULT (Router: tologin)";
+                res.send(errMsg);
+                console.log(errMsg, err);
             }
         }
     })

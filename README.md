@@ -18,6 +18,32 @@ node_modules不上传, 可使用`npm install`补全模块
 - Linux/MacOS: `DEBUG=myapp:* npm start`
 - Windows: `set DEBUG=myapp:* & npm start`
 
+## 报错规范
+
+按照约定产生错误信息, 前端/后端都必须在控制台打印错误信息
+
+### 错误信息格式:
+
+```javascript
+`ERROR: ${错误类型代码} (${错误来源类型}: ${错误来源文件名})`
+```
+
+### 错误信息示例:
+
+```javascript
+`ERROR: SQL_QUERY_ERROR (Router: registerVerify)`
+```
+
+### 错误代码约定:
+
+- SQL_QUERY_ERROR: 数据库查询错误
+- SQL_NO_RESULT: 数据库查询无结果错误
+- JWT_VERIFY_ERROR: Token验证错误
+- USER_EXIST_ERROR: 用户已存在错误
+- MAIL_SEND_ERROR: 邮件发送错误
+- NO_LOGIN_ERROR: 用户未登录错误
+
+
 ## 展示
 
 ### itemModal

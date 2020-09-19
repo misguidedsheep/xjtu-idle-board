@@ -1,20 +1,24 @@
 <!-- 排序筛选导航栏 -->
+<div id="itemNavPositioner" style="height: 1rem;"></div>
 <nav class="navbar navbar-expand-md navbar-dark bg-dark" id="itemNav">
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#itemNavbarBody" aria-controls="itemNavbarBody" aria-expanded="false" aria-label="Toggle navigation">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#itemNavbarBody"
+    aria-controls="itemNavbarBody" aria-expanded="false" aria-label="Toggle navigation">
     <span class=" navbar-toggler-icon"></span>
   </button>
   <div id="itemNavbarBody" class="collapse navbar-collapse">
     <ul class="navbar-nav col-5 mr-auto">
-      <li id="newestSort" class="nav-item"><a id="newestSortLink" href="search=null-sort=date_down-min=0-max=999999#itemNav" class="nav-link">最新发布<span class="sr-only">(current)</span></a></li>
-      <li id="priceSort" class="nav-item"><a id="priceSortLink" href="search=null-sort=price_up-min=0-max=999999#itemNav" class="nav-link">价格</a></li>
+      <li id="newestSort" class="nav-item"><a id="newestSortLink"
+          href="search=null-sort=date_down-min=0-max=999999#itemNav" class="nav-link">最新发布<span
+            class="sr-only">(current)</span></a></li>
+      <li id="priceSort" class="nav-item"><a id="priceSortLink"
+          href="search=null-sort=price_up-min=0-max=999999#itemNav" class="nav-link">价格</a></li>
     </ul>
-    <form class="form-inline navbar-dark bg-dark my-2 my-lg-0" >
+    <form class="form-inline navbar-dark bg-dark my-2 my-lg-0">
       <input id="priceMinInput" type="text" class="form-control-sm col-3" placeholder="最低">
       <span class="navbar-text col-1"> - </span>
       <input id="priceMaxInput" type="text" class="form-control-sm col-3" placeholder="最高">
-      <button id="setRangeBtn" onclick="setPriceRange()" type="button" class="btn col-4 btn-sm btn-primary ml-3 ">设置价格区间</button>
+      <button id="setRangeBtn" type="button" class="btn col-4 btn-sm btn-primary ml-3 ">设置价格区间</button>
     </form>
   </div>
 </nav>
 <!-- 排序筛选导航栏结束 -->
-
