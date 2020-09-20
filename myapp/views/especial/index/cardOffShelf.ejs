@@ -1,0 +1,21 @@
+<div class="card offShelf" id="itemID<%= itemID %>" onclick="getItemInfo(this.id.replace('itemID', ''))" data-toggle="modal"
+  data-target="#itemModal" style="display: none;">
+  <img class="card-img-top" style="filter: blur(5px);" src="upload/<%= coverFileName %>" onerror='$(this).css("display", "none")'>
+  <div class="card-body">
+    <h5 class="card-title">[已下架]<%= itemName %></h5>
+    <h5 class="card-subtitle">￥<%= itemPrice%></h5>
+    <p class="card-text"><%= itemDescription%></p>
+    <h5 class="card-sublitle">
+      <% if (trans.deliverByPost) {%>
+      <span class=" badge badge-primary">邮寄</span>
+      <%}%>
+        <% if (trans.deliverByFace) {%>
+      <span class=" badge badge-success">当面交易</span>
+      <%}%>
+        <% if (trans.deliverNoNeed) {%>
+      <span class=" badge badge-success">无需运送</span>
+      <%}%>
+        </h5>
+      
+    </div>
+</div>

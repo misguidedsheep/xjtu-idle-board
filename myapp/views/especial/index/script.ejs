@@ -66,6 +66,21 @@
       reloadCard();
     }
   });
+
+  $("#showItemOffShelf").click(function(){
+    if(!$("#showItemOffShelf").hasClass("active")){
+      $(".offShelf").css("display", "");
+      $("#showItemOffShelfIcon").removeClass("fa-toggle-off")
+      $("#showItemOffShelfIcon").addClass("fa-toggle-on")
+      $("#showItemOffShelf").addClass("active")
+    }else{
+      $(".offShelf").css("display", "none");
+      $("#showItemOffShelfIcon").removeClass("fa-toggle-on")
+      $("#showItemOffShelfIcon").addClass("fa-toggle-off")
+      $("#showItemOffShelf").removeClass("active")
+    }
+    
+  })
 </script>
 
 <script>

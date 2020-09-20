@@ -19,20 +19,39 @@ function getCardSet(sql, res) {
 			// √ 查询成功, 可以返回卡片组
 			var cardSet = ''
 			var cardDir = join(__dirname, '../views/especial/index/card.ejs');
-			var generator = ejs.compile(fs.readFileSync(cardDir, 'utf8'));
+			var cardOffShelfDir = join(__dirname, '../views/especial/index/cardOffShelf.ejs');
+			var generatorCard = ejs.compile(fs.readFileSync(cardDir, 'utf8'));
+			var generatorCardOffShelf = ejs.compile(fs.readFileSync(cardOffShelfDir, 'utf8'));
 			result.forEach(item => {
-				cardSet += generator({
-					coverFileName: item.CoverFileName,
-					itemName: item.ItemName,
-					itemPrice: item.ItemPrice,
-					itemDescription: item.ItemDescription,
-					itemID: item.ItemID,
-					trans: {
-						deliverByPost: item.DeliverByPost ? true : false,
-						deliverByFace: item.DeliverByFace ? true : false,
-						deliverNoNeed: item.DeliverNoNeed ? true : false
-					}
-				});
+				if (item.OnSale){
+					// 如果在售
+					cardSet += generatorCard({
+						coverFileName: item.CoverFileName,
+						itemName: item.ItemName,
+						itemPrice: item.ItemPrice,
+						itemDescription: item.ItemDescription,
+						itemID: item.ItemID,
+						trans: {
+							deliverByPost: item.DeliverByPost ? true : false,
+							deliverByFace: item.DeliverByFace ? true : false,
+							deliverNoNeed: item.DeliverNoNeed ? true : false
+						}
+					});
+				}else{
+					// 如果下架
+					cardSet += generatorCardOffShelf({
+						coverFileName: item.CoverFileName,
+						itemName: item.ItemName,
+						itemPrice: item.ItemPrice,
+						itemDescription: item.ItemDescription,
+						itemID: item.ItemID,
+						trans: {
+							deliverByPost: item.DeliverByPost ? true : false,
+							deliverByFace: item.DeliverByFace ? true : false,
+							deliverNoNeed: item.DeliverNoNeed ? true : false
+						}
+					})
+				}
 			});
 			res.send(cardSet);
 		}
