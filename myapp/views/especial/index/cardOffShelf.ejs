@@ -1,6 +1,8 @@
-<div class="card offShelf box newbox" id="itemID<%= itemID %>" onclick="getItemInfo(this.id.replace('itemID', ''))" data-toggle="modal"
+<div class="card offShelf box newbox text-white bg-secondary" id="itemID<%= itemID %>" onclick="getItemInfo(this.id.replace('itemID', ''))" data-toggle="modal"
   data-target="#itemModal">
-  <img class="card-img-top" style="filter: blur(2px);" src="upload/<%= coverFileName %>" onerror='$(this).css("display", "none")'>
+  <div class="cardImgArea" data-aspect-ratio="<%= aspectRatio %>" style="width: 100%;">
+    <img class="card-img-top" src="upload/<%= coverFileName %>" onerror='$(this).css("display", "none")'>
+  </div>  
   <div class="card-body">
     <h5 class="card-title">[已下架]<%= itemName %></h5>
     <h5 class="card-subtitle">￥<%= itemPrice%></h5>

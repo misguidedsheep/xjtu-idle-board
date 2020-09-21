@@ -33,36 +33,36 @@
 
   $(window).scroll(function () {
     // 滚轮监听
-   
+
     var scrollPosition = $(this).scrollTop();
     var itemNavHeight = $("#itemNav").height();
     // 根据两个位置大小关系, 确定导航栏的显示方式
 
     // 如果itemNav没有置顶
-    if (!$("#itemNav").hasClass("fixed-top")){
+    if (!$("#itemNav").hasClass("fixed-top")) {
       var itemNavHeight = $("#itemNav").height();
       var itemNavOffset = $("#itemNav").offset().top;
-      if(scrollPosition >= itemNavOffset - 10){
+      if (scrollPosition >= itemNavOffset - 10) {
         $("#topNav").css("display", "none");
         $("#itemNav").addClass("fixed-top");
         $("#itemNavPositioner").height(itemNavHeight);
       }
-    }else{
+    } else {
       // 如果itemNav置顶
       var itemNavHeight = $("#itemNavPositioner").height();
       var itemNavOffset = $("#itemNavPositioner").offset().top;
-      if(scrollPosition <= itemNavOffset - 10){
+      if (scrollPosition <= itemNavOffset - 10) {
         $("#topNav").css("display", "");
         $("#itemNav").removeClass("fixed-top");
         $("#itemNavPositioner").height('0');
       }
     }
-    
+
     // 动态加载
     var documentHeight = $(document).height();
     var windowHeight = $(window).innerHeight();
     // console.log('documentHeight', documentHeight, 'scrollPosition + windowHeight', scrollPosition ,  windowHeight)
-    if(scrollPosition + windowHeight*1.1 >= documentHeight && loadStart <= loadedCard && cardReturned){
+    if (scrollPosition + windowHeight * 1.1 >= documentHeight && loadStart <= loadedCard && cardReturned) {
       loadCard();
       cardReturned = false;
     }
@@ -76,22 +76,22 @@
       if (search == "") search = "null";
       loadedCard = 0;
       loadStart = 0;
-      console.log('loadedCard',loadedCard,'loadStart',loadedCard)
+      console.log('loadedCard', loadedCard, 'loadStart', loadedCard)
       loadCard();
     }
   });
 
   // 显示下架开关点击事件
-  $("#showItemOffShelf").click(function(){
-    if(!$("#showItemOffShelf").hasClass("active")){
+  $("#showItemOffShelf").click(function () {
+    if (!$("#showItemOffShelf").hasClass("active")) {
       $(".offShelf").css("display", "");
-      
+
       $("#showItemOffShelfIcon").removeClass("fa-toggle-off")
       $("#showItemOffShelfIcon").addClass("fa-toggle-on")
       $("#showItemOffShelf").addClass("active")
       // $(".offShelf").css("width", "33%");
       $container.masonry();
-    }else{
+    } else {
       $(".offShelf").css("display", "none");
       $("#showItemOffShelfIcon").removeClass("fa-toggle-on")
       $("#showItemOffShelfIcon").addClass("fa-toggle-off")
@@ -106,7 +106,7 @@
       //   isAnimated: true,
       // });
     }
-    
+
   })
 </script>
 
@@ -136,7 +136,7 @@
     let priceSortInner = "价格";
     let priceSortLinkChioce = "price_up";
     let hrefFwd = `search=${search}-sort=`;
-    let hrefEnd =`-min=${min}-max=${max}-start=${0}-limit=${loadLimit}`;
+    let hrefEnd = `-min=${min}-max=${max}-start=${0}-limit=${loadLimit}`;
     switch (sort) {
       case "price_up":
         activeID = "priceSort";
@@ -194,7 +194,7 @@
 
   }
 
- 
+
 
   function getAjaxUrl() {
     return `/search=${search}-sort=${sort}-min=${min}-max=${max}-start=${loadStart}-limit=${loadLimit}`;
@@ -211,8 +211,8 @@
           return;
         } else {
 
-          
-          if (loadStart == 0){
+
+          if (loadStart == 0) {
             // 如果是第一次加载, 重新加载cardArea
             $("#cardAreas").html("")
             // 如果是第一次加载, 初始化masonry
@@ -222,19 +222,30 @@
               gutter: 30
             });
           }
-          
+
 
           var $content = $(resJson.cardSet.toString())
-          $container.append($content) 
-          $("#cardAreas").imagesLoaded(function() { 
-            $container.masonry('appended', $content)
-            if(!$("#showItemOffShelf").hasClass("active")){
-              $(".offShelf").css("display", "none");
-            }
-            $container.masonry();
-            $(".newbox").removeClass('newbox')
+          $container.append($content)
+          // alert("stop")
+          var imgWidth = $(".cardImgArea").width();
+          $(".cardImgArea").each((index, element) => {
+            var imgHeight = imgWidth/$(element).attr("data-aspect-ratio")
+            $(element).height(imgHeight);
+            console.log(imgHeight);
+            // $(this).height($(this).width() / parseInt($(this).attr("data-aspect-ratio")))
           })
+          // alert("stop")
           
+          // $("#cardAreas").imagesLoaded(function() { 
+          $container.masonry('appended', $content)
+          if (!$("#showItemOffShelf").hasClass("active")) {
+            $(".offShelf").css("display", "none");
+          }
+          
+          $container.masonry();
+          $(".newbox").removeClass('newbox')
+          // })
+
           cardReturned = true
           loadedCard += resJson.cardNum;
           loadStart += loadLimit;
@@ -244,17 +255,17 @@
     });
   };
 
-  function itemNavLink(href, choice){
+  function itemNavLink(href, choice) {
     console.log("itemNavLink", href)
-    switch(choice){
-      case 'date_down': sort = 'date_down';  break;
+    switch (choice) {
+      case 'date_down': sort = 'date_down'; break;
       case 'price_up': sort = 'price_up'; break;
       case 'price_down': sort = 'price_down'; break;
     }
     loadStart = 0;
     loadedCard = 0;
     loadCardAjax(href);
-    updateNav();    
+    updateNav();
   }
 
   // 根据全局变量中存储的状态进行 卡片重(初)加载
@@ -265,19 +276,19 @@
 
   // 加载后执行
   $(function () {
-    
+
     loadCard();
     updateNav();
     // 显示顶部搜索栏
     $("#topSearch").css("display", "")
-    
+
   });
 </script>
 
 <script>
   /* 插件脚本 */
 
-  
+
 
   // 初始化clipboard插件
   var clipboard = new ClipboardJS("#copyWechatID", {

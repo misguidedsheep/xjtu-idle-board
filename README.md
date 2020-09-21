@@ -46,6 +46,10 @@ node_modules不上传, 可使用`npm install`补全模块
 
 ## 展示
 
+### logo
+
+![xib logo](https://s1.ax1x.com/2020/09/21/wqV8r4.jpg)
+
 ### 主页示例
 
 ![主页示例](https://s1.ax1x.com/2020/09/19/woeMGD.png)

@@ -1,9 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var fs = require('fs');
+var imageSize = require("image-size");
 const database = require('../database');
 const { join } = require('path');
 const ejs = require('ejs');
+
 
 
 // 错误处理标准化 √√
@@ -23,10 +25,12 @@ function getCardSet(sql, res) {
 			var generatorCard = ejs.compile(fs.readFileSync(cardDir, 'utf8'));
 			var generatorCardOffShelf = ejs.compile(fs.readFileSync(cardOffShelfDir, 'utf8'));
 			result.forEach(item => {
+				shape = imageSize(join(__dirname, `../public/upload/${item.CoverFileName}`))
 				if (item.OnSale){
 					// 如果在售
 					cardSet += generatorCard({
 						coverFileName: item.CoverFileName,
+						aspectRatio: shape.width/shape.height,
 						itemName: item.ItemName,
 						itemPrice: item.ItemPrice,
 						itemDescription: item.ItemDescription,
@@ -41,6 +45,9 @@ function getCardSet(sql, res) {
 					// 如果下架
 					cardSet += generatorCardOffShelf({
 						coverFileName: item.CoverFileName,
+						aspectRatio: shape.width/shape.height,
+						// coverFileHeight: shape.height,
+						// coverFileWidth: shape.width,
 						itemName: item.ItemName,
 						itemPrice: item.ItemPrice,
 						itemDescription: item.ItemDescription,
