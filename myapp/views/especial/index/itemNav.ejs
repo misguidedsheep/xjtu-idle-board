@@ -7,11 +7,11 @@
   </button>
   <div id="itemNavbarBody" class="collapse navbar-collapse">
     <ul class="navbar-nav col-6 mr-auto">
-      <li id="newestSort" class="navbar-text"><a id="newestSortLink"
-          href="search=null-sort=date_down-min=0-max=999999#itemNav" class="fas fa-bell nav-link">最新发布<span
+      <li id="newestSort" class="navbar-text" ><a id="newestSortLink" onclick="itemNavLink('search=null-sort=price_up-min=0-max=999999-start=0-limit=5', 'date_down')"
+          href="javascript:void(0);" class="fas fa-bell nav-link">最新发布<span
             class="sr-only">(current)</span></a></li>
       <li id="priceSort" class="navbar-text"><a id="priceSortLink"
-          href="search=null-sort=price_up-min=0-max=999999#itemNav" class="fas fa-yen-sign nav-link">价格</a></li>
+          href="javascript:void(0);" class="fas fa-yen-sign nav-link" onclick="itemNavLink('search=null-sort=price_up-min=0-max=999999-start=0-limit=5', 'price_down')">价格</a></li>
       <li id="showItemOffShelf" class=" navbar-text"><a id="showItemOffShelfIcon" class="fas fa-toggle-off nav-link">显示已下架商品</a></li>
     </ul>
     <form class="form-inline my-2 my-lg-0 col-md-4">

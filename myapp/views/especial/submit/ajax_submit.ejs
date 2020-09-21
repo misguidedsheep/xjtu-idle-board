@@ -37,12 +37,13 @@
 
                         //验证表单输入
                         // 商品名称
-                        if($("#itemName").val().length > 36) $("#itemName").addClass("is-invalid");
+                        if($("#itemName").val().length > 36 || $("#itemName").val() == "" ) $("#itemName").addClass("is-invalid");
                         // 商品价格
-                        var price = Number($("#itemPrice").val())
-                        if(isNaN(price) || parseInt(price) < 0) $("#itemPrice").addClass("is-invalid");
+                        var price = $("#itemPrice").val()
+                        var re = /^[0-9]/
+                        if(!re.test(price) || parseInt(price) < 0) $("#itemPrice").addClass("is-invalid");
                         // 商品简介
-                        if($("#itemDescription").val().length > 200) $("#itemDescription").addClass("is-invalid");
+                        if($("#itemDescription").val().length > 200 || $("#itemDescription").val() == "") $("#itemDescription").addClass("is-invalid");
                         // 新旧程度描述
                         if($("#itemOldNewRate").val().length > 200) $("#itemOldNewRate").addClass("is-invalid");
                         // 封面

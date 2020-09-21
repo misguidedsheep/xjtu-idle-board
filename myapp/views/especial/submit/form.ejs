@@ -8,17 +8,17 @@
             <div class="row col-md-12" >
                 <div class="form-group col-sm-8">
                     <label for="itemName">商品名称*</label>
-                    <input type="text" name="itemName" class="form-control" placeholder="itemName" id="itemName">
+                    <input type="text" name="itemName" class="form-control"  id="itemName" autocomplete="off">
                     <small id="itemNameHelper" class="form-text text-muted">输入准确的商品名称, 更容易被搜索到(36字以内)</small>
                     <div class="invalid-feedback">
-                        字符长度超出限制
+                        必填项，请注意字符长度限制
                     </div>
                 </div>
             
                 <div class="form-group col-md-4">
                     <label for="itemName">商品价格*</label>
-                    <input type="text" name="itemPrice" class="form-control" placeholder="itemPrice" id="itemPrice">
-                    <small id="itemNameHelper" class="form-text text-muted">请输入整数, 最小值为1</small>
+                    <input type="text" name="itemPrice" class="form-control"  id="itemPrice" autocomplete="off">
+                    <small id="itemNameHelper" class="form-text text-muted">请输入整数, 最小值为0</small>
                     <div class="invalid-feedback">
                         请检查输入是否符合要求
                     </div>
@@ -27,24 +27,24 @@
             
             <div class="form-group col-sm-12">
                 <label for="itemDescription">商品简介*</label>
-                <input type="text" name="itemDescription" class="form-control" placeholder="itemDescription" id="itemDescription" required>
+                <input type="text" name="itemDescription" class="form-control" placeholder="简单介绍商品的特性、卖点等" id="itemDescription" autocomplete="off">
                 <small id="itemDescriptionHelper" class="form-text text-muted">简要的补充说明（200字以内）</small>
                 <div class="invalid-feedback">
-                    字符长度超出限制
+                    必填项，请注意字符长度限制
                 </div>
             </div>
             <div class="form-group col-sm-12">
                 <label for="itemOldNewRate">新旧程度描述</label>
-                <input type="text" name="itemOldNewRate" class="form-control" placeholder="itemOldNewRate" id="itemOldNewRate">
+                <input type="text" name="itemOldNewRate" class="form-control" placeholder="可以介绍物品来源、成色、使用情况等" id="itemOldNewRate" autocomplete="off">
                 <small id="itemDescriptionHelper" class="form-text text-muted">36字以内</small>
                 <div class="invalid-feedback">
-                    字符长度超出限制
+                    请注意字符长度限制
                 </div>
             </div>
 
             <div class="form-group col-sm-12">
-                <label for="coverFileName">服务器封面图片文件名</label>
-                <input type="text" name="coverFileName" class="form-control disable" placeholder="coverFileName" id="coverFileName" readonly>
+                <label for="coverFileName">封面图片标识码*</label>
+                <input type="text" name="coverFileName" class="form-control disable" placeholder="点击上传按钮、上传成功之后才算完成~" id="coverFileName" readonly autocomplete="off">
                 <small id="itemNameHelper" class="form-text text-muted">上传图片后自动生成</small>
             </div>
             <div class="invalid-feedback">
@@ -53,8 +53,8 @@
         </div>
 
         <div class="form-group col-md-4">
-            <label for="file">上传封面图片</label>
-            <input type="file" name="file" id="uploadfile" data-browse-on-zone-click="true">
+            <label for="file">上传封面图片（仅一张）*</label>
+            <input type="file" name="file" id="uploadfile" placeholder="shang" data-browse-on-zone-click="true" accept=" /image/jpeg,/image/jpg">
         </div>
         
         <!-- <div class="col-md-4">
@@ -94,10 +94,10 @@
     <hr>
     <div class="form-group col-sm-10">
         <label for="remarks" class="h5">备注</label>
-        <input type="text" class="form-control" placeholder="remarks" name="remarks" id="remarks">
+        <input type="text" class="form-control" placeholder="一行小字，可以放必要的声明" name="remarks" id="remarks" autocomplete="off">
         <small id="itemDescriptionHelper" class="form-text text-muted">100字以内</small>
         <div class="invalid-feedback">
-            字符长度超出限制
+            请注意字符长度限制
         </div>
     </div>
     

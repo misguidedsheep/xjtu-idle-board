@@ -53,13 +53,16 @@ function getCardSet(sql, res) {
 					})
 				}
 			});
-			res.send(cardSet);
+			res.json({
+				'cardNum': result.length,
+				'cardSet': cardSet
+			})
 		}
 	});
 }
 
 
-router.get('/search=:searchExp-sort=:sortMode-min=:minPrice-max=:maxPrice', function (req, res) {
+router.get('/search=:searchExp-sort=:sortMode-min=:minPrice-max=:maxPrice-start=:loadStart-limit=:loadLimit', function (req, res) {
 
 	let toSearch = true;
 	let toSort = true;
@@ -67,19 +70,19 @@ router.get('/search=:searchExp-sort=:sortMode-min=:minPrice-max=:maxPrice', func
 	let sortMode = req.params.sortMode;
 	let searchExp = req.params.searchExp;
 
-	let rangeCode = ' ItemPrice BETWEEN ' + req.params.minPrice + ' and ' + req.params.maxPrice;
+	let rangeCode = 'ItemPrice BETWEEN ' + req.params.minPrice + ' and ' + req.params.maxPrice;
 
 	switch (sortMode) {
-		case 'price_up': sortCode = ' ORDER BY ItemPrice ASC'; break;
-		case 'price_down': sortCode = ' ORDER BY ItemPrice DESC'; break;
-		case 'date_down': sortCode = ' ORDER BY ItemID DESC'; break;
+		case 'price_up': sortCode = 'ORDER BY ItemPrice ASC'; break;
+		case 'price_down': sortCode = 'ORDER BY ItemPrice DESC'; break;
+		case 'date_down': sortCode = 'ORDER BY ItemID DESC'; break;
 		case 'null': toSort = false; break;
 		default: res.send('Invalid Sort Method ERROR'); break;
 	}
 
 	if (searchExp == 'null' || searchExp == '') toSearch = false;
-	else searchCode = " and ItemName LIKE \'%" + searchExp + "%\'";
-	let sqlCode = 'SELECT * FROM Items WHERE' + rangeCode + (toSearch ? searchCode : '') + (toSort ? sortCode : '');
+	else searchCode = "and ItemName LIKE \'%" + searchExp + "%\'";
+	let sqlCode = `SELECT * FROM Items WHERE ${rangeCode} ${(toSearch ? searchCode : '')} ${(toSort ? sortCode : '')} LIMIT ${req.params.loadStart},${req.params.loadLimit};`;
 	getCardSet(sqlCode, res)
 });
 

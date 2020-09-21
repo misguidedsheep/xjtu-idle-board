@@ -23,7 +23,9 @@
       // 检验有效, 赋值
       min = priceMin;
       max = priceMax;
-      reloadCard();
+      loadStart = 0;
+      loadedCard = 0;
+      loadCard();
     }
 
   })
@@ -56,6 +58,15 @@
       }
     }
     
+    // 动态加载
+    var documentHeight = $(document).height();
+    var windowHeight = $(window).innerHeight();
+    // console.log('documentHeight', documentHeight, 'scrollPosition + windowHeight', scrollPosition ,  windowHeight)
+    if(scrollPosition + windowHeight*1.1 >= documentHeight && loadStart <= loadedCard && cardReturned){
+      loadCard();
+      cardReturned = false;
+    }
+
   });
 
   // 搜索事件
@@ -63,21 +74,37 @@
     if (event.which == 13) {
       search = $("#topSearch").val();
       if (search == "") search = "null";
-      reloadCard();
+      loadedCard = 0;
+      loadStart = 0;
+      console.log('loadedCard',loadedCard,'loadStart',loadedCard)
+      loadCard();
     }
   });
 
+  // 显示下架开关点击事件
   $("#showItemOffShelf").click(function(){
     if(!$("#showItemOffShelf").hasClass("active")){
       $(".offShelf").css("display", "");
+      
       $("#showItemOffShelfIcon").removeClass("fa-toggle-off")
       $("#showItemOffShelfIcon").addClass("fa-toggle-on")
       $("#showItemOffShelf").addClass("active")
+      // $(".offShelf").css("width", "33%");
+      $container.masonry();
     }else{
       $(".offShelf").css("display", "none");
       $("#showItemOffShelfIcon").removeClass("fa-toggle-on")
       $("#showItemOffShelfIcon").addClass("fa-toggle-off")
       $("#showItemOffShelf").removeClass("active")
+      // $(".offShelf").css("width", "0");
+      $container.masonry();
+
+
+      // $container.masonry({
+      //   itemSelector: '.box',
+      //   gutter: 20,
+      //   isAnimated: true,
+      // });
     }
     
   })
@@ -91,9 +118,15 @@
   var sort = "date_down";
   var min = "0";
   var max = "999999";
+  var loadedCard = 0;
+  var loadStart = 0;
+  var cardReturned = false;
+  const loadLimit = 5;
+  var $container;
 
   // 全局声明式函数
   function updateNav() {
+    console.log("updateNav", search, sort, min, max)
     // 顶部搜索栏部分
     if (search == "null") $("#topSearch").value = "";
     else $("#topSearch").val(search);
@@ -102,8 +135,8 @@
     let activeID = "";
     let priceSortInner = "价格";
     let priceSortLinkChioce = "price_up";
-    let hrefFwd = "search=" + search + "-sort=";
-    let hrefEnd = "-" + "min=" + min + "-max=" + max;
+    let hrefFwd = `search=${search}-sort=`;
+    let hrefEnd =`-min=${min}-max=${max}-start=${0}-limit=${loadLimit}`;
     switch (sort) {
       case "price_up":
         activeID = "priceSort";
@@ -131,16 +164,21 @@
 
     // 改变链接
     $("#newestSortLink").attr(
-      "href",
-      `javascript:reloadCardAjax("${hrefFwd}date_down${hrefEnd}")`
+      "onclick",
+      `itemNavLink("${hrefFwd}date_down${hrefEnd}", 'date_down')`
     );
+
     $("#priceSortLink").attr(
-      "href",
-      `javascript:reloadCardAjax("${hrefFwd}${priceSortLinkChioce}${hrefEnd}")`
+      "onclick",
+      `itemNavLink("${hrefFwd}${priceSortLinkChioce}${hrefEnd}", "${priceSortLinkChioce}")`
     );
+
     // 移除所有 active
     $("#newestSort").removeClass("active");
     $("#priceSort").removeClass("active");
+    $("#showItemOffShelf").removeClass("active");
+    $("#showItemOffShelfIcon").removeClass("fa-toggle-on")
+    $("#showItemOffShelfIcon").addClass("fa-toggle-off")
     // 添加当前 active
     $("#" + activeID).addClass("active");
 
@@ -156,53 +194,90 @@
 
   }
 
+ 
+
   function getAjaxUrl() {
-    return `/search=${search}-sort=${sort}-min=${min}-max=${max}`;
+    return `/search=${search}-sort=${sort}-min=${min}-max=${max}-start=${loadStart}-limit=${loadLimit}`;
   };
 
-  function reloadCardAjax(url) {
+  function loadCardAjax(url) {
     $.ajax({
       type: "GET",
       url: url,
-      success: function (cardHtml) {
-        if (cardHtml.toString().startsWith('ERROR')) {
+      success: function (resJson) {
+        if (resJson.toString().startsWith('ERROR')) {
           alert("获取商品卡片失败")
-          console(cardHtml)
+          console.log(resJson);
           return;
         } else {
-          // 重新加载卡片
-          $("#cardAreas").html(cardHtml);
-          let regex = /\/?search=(.*)-sort=(.*)-min=(\d+)-max=(\d+)/;
-          let result = url.match(regex);
-          search = result[1];
-          sort = result[2];
-          min = result[3];
-          max = result[4];
 
-          // 重新加载Nav
-          updateNav();
+          
+          if (loadStart == 0){
+            // 如果是第一次加载, 重新加载cardArea
+            $("#cardAreas").html("")
+            // 如果是第一次加载, 初始化masonry
+            $container = $("#cardAreas").masonry({
+              itemSelector: '.box',
+              columnWidth: 10,
+              gutter: 30
+            });
+          }
+          
+
+          var $content = $(resJson.cardSet.toString())
+          $container.append($content) 
+          $("#cardAreas").imagesLoaded(function() { 
+            $container.masonry('appended', $content)
+            if(!$("#showItemOffShelf").hasClass("active")){
+              $(".offShelf").css("display", "none");
+            }
+            $container.masonry();
+            $(".newbox").removeClass('newbox')
+          })
+          
+          cardReturned = true
+          loadedCard += resJson.cardNum;
+          loadStart += loadLimit;
+
         }
       },
     });
   };
 
+  function itemNavLink(href, choice){
+    console.log("itemNavLink", href)
+    switch(choice){
+      case 'date_down': sort = 'date_down';  break;
+      case 'price_up': sort = 'price_up'; break;
+      case 'price_down': sort = 'price_down'; break;
+    }
+    loadStart = 0;
+    loadedCard = 0;
+    loadCardAjax(href);
+    updateNav();    
+  }
+
   // 根据全局变量中存储的状态进行 卡片重(初)加载
-  function reloadCard() {
-    reloadCardAjax(getAjaxUrl());
+  function loadCard() {
+    loadCardAjax(getAjaxUrl());
   };
 
 
   // 加载后执行
   $(function () {
-    reloadCard();
+    
+    loadCard();
     updateNav();
     // 显示顶部搜索栏
     $("#topSearch").css("display", "")
+    
   });
 </script>
 
 <script>
   /* 插件脚本 */
+
+  
 
   // 初始化clipboard插件
   var clipboard = new ClipboardJS("#copyWechatID", {

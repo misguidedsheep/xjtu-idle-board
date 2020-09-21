@@ -1,14 +1,19 @@
 <script>
     $(function(){
         $("#uploadfile").fileinput({
+            allowedFileTypes: ['image'],
             language: 'zh',
             theme: 'fas',
             uploadUrl: 'saveimg',
             async: false,
+            maxFileCount: 1,
+            allowedFileExtensions: [],
             ajaxSettings: {
                 dataType: 'json'
-            }
-        })
+            },
+            maxFileSize: 10*1024,
+            //elCaptionText: "提示信息"
+        })  
         $("#uploadfile").on('fileuploaded', function(event, data, previewId, index){    
             $("#coverFileName").val(data.response.fileName);
         })

@@ -132,3 +132,51 @@ body {
       min-width: 300px;
   }
 }
+
+@media (min-width: 2000px) {
+  .container{
+      max-width: 1600px;
+      min-width: 300px;
+  }
+}
+
+
+.container-fluid {
+  padding: 20px;
+  }
+.box {
+  margin-bottom: 20px;
+  float: left;
+  width: 350px;
+  }
+  .box img {
+  max-width: 100%
+}
+
+.box{ width: 100%;}
+
+
+
+@media (min-width: 48em) {
+  .box {
+    width: 49%;
+  }
+}
+
+@media (min-width: 62em) {
+  .box {
+      width: 32%;
+  }
+}
+
+@media (min-width: 62em) {
+  .box {
+      width: 32%;
+  }
+}
+
+@media (min-width: 2200px) {
+  .box {
+      width: 24%;
+  }
+}
