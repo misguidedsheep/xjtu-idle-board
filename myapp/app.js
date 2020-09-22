@@ -9,6 +9,7 @@ var upload = multer({
   dest: 'public/upload/'
 })
 
+
 // 引入路由
 var indexRouter = require('./routes/index');
 var submitRouter = require('./routes/submit')
