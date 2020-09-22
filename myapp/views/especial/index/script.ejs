@@ -81,6 +81,10 @@
     }
   });
 
+
+
+  
+
   // 显示下架开关点击事件
   $("#showItemOffShelf").click(function () {
     if (!$("#showItemOffShelf").hasClass("active")) {
@@ -243,6 +247,18 @@
           }
           
           $container.masonry();
+
+          // 绑定事件, 鼠标移动至卡片, 添加阴影效果
+          $("#cardAreas").on('mouseenter','.card', function(){
+            console.log("here")
+            $(this).addClass("shadow-lg")
+          })
+
+          $("#cardAreas").on('mouseleave','.card', function(){
+            console.log("here")
+            $(this).removeClass("shadow-lg")
+          })
+
           $(".newbox").removeClass('newbox')
           // })
 
