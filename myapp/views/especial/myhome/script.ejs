@@ -46,9 +46,11 @@
       headers: { 'Authorization': `Bearer ${token}` },
       success: (res) => {
         if (res.toString().startsWith('ERROR')) {
-          // ! 后端返回错误
-          alert("获取物品信息失败, 请检查登录状态/联系管理员")
-          console.log(res)
+          if(! res.toString().replace("ERROR: ", "").startsWith("SQL_NO_RESULT")){
+            // ! 后端返回错误
+            alert("获取物品信息失败, 请检查登录状态/联系管理员")
+            console.log(res)
+          }
         } else {
           //  本地存储一份物品信息
           itemSet = res;
