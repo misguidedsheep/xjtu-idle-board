@@ -7,10 +7,20 @@
 var app = require('../app');
 var debug = require('debug')('myapp:server');
 var http = require('http');
+var https = require('https');
+var fs = require('fs');
+
 
 /**
  * Get port from environment and store in Express.
  */
+
+ var options = {
+  key: fs.readFileSync('../private/ssl/reina.link.key'),
+  cert: fs.readFileSync('../private/ssl/reina.link.pem')
+ }
+
+
 
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
@@ -20,6 +30,9 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
+
+// https server
+https.createServer(options, app).listen(443);
 
 /**
  * Listen on provided port, on all network interfaces.
