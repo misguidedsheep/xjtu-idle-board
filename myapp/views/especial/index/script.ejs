@@ -231,8 +231,8 @@
           var $content = $(resJson.cardSet.toString())
           $container.append($content)
           // alert("stop")
-          var imgWidth = $(".cardImgArea").width();
           $(".cardImgArea").each((index, element) => {
+            var imgWidth = $(element).width();
             var imgHeight = imgWidth/$(element).attr("data-aspect-ratio")
             $(element).height(imgHeight);
             console.log(imgHeight);

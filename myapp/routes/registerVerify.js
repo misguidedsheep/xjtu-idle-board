@@ -21,7 +21,7 @@ router.use(function (req, res, next) {
 			var netID = decoded.netID
 			var userName = decoded.userName
 			var key = decoded.key
-			var sql = 'SELECT * FROM Users Where NetID = ${netID}';
+			var sql = "SELECT * FROM Users Where NetID ='${netID}'";
 			database.connection.query(sql, function(err, result){
 				if (result.length != 0){
 					// 已经注册过了, 防止重复注册

@@ -22,7 +22,7 @@
         }
         
         // NetID正则，包含数字和大小写字母，但位数不确定
-        var netIDPattern = /^[a-zA-Z0-9]{4,16}$/;
+        var netIDPattern = /^[a-zA-Z0-9_]{4,16}$/;
         if(netIDPattern.test(netID) == false){
             $("#netID").addClass("is-invalid");
         }else{
